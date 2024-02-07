@@ -1,8 +1,3 @@
 .github/workflows/Deploy.yaml
 backend/vendor/
-backend/vendor/composer/
-backend/vendor/composer/installed.php
-backend/vendor/composer/installed.json
-backend/vendor/composer/autoload_static.php
-backend/vendor/composer/autoload_psr4.php
-backend/vendor/composer/autoload_files.php
+backend/composer.lock
