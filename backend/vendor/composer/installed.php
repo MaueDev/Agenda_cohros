@@ -10,6 +10,15 @@
         'dev' => true,
     ),
     'versions' => array(
+        'beberlei/assert' => array(
+            'pretty_version' => 'v3.3.2',
+            'version' => '3.3.2.0',
+            'reference' => 'cb70015c04be1baee6f5f5c953703347c0ac1655',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../beberlei/assert',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'mauedev/agendaapi' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',

@@ -8,6 +8,7 @@ class ComposerStaticInit43c43a01c7335350cbbdbb77a20f1ce6
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        'a4ecaeafb8cfb009ad0e052c90355e98' => __DIR__ . '/..' . '/beberlei/assert/lib/Assert/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -26,6 +27,7 @@ class ComposerStaticInit43c43a01c7335350cbbdbb77a20f1ce6
         ),
         'A' => 
         array (
+            'Assert\\' => 7,
             'Agenda\\' => 7,
         ),
     );
@@ -46,6 +48,10 @@ class ComposerStaticInit43c43a01c7335350cbbdbb77a20f1ce6
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
+        'Assert\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/beberlei/assert/lib/Assert',
         ),
         'Agenda\\' => 
         array (
