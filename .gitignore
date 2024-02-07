@@ -1,3 +1,4 @@
 .github/workflows/Deploy.yaml
 backend/vendor/
 backend/composer.lock
+backend/Migrations
