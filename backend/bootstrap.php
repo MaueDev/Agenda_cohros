@@ -12,4 +12,3 @@ $app->get('/', function ($request, $response, $args) {
 // Run application
 $app->run();
 
-?>
