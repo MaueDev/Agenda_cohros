@@ -30,10 +30,65 @@
       "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
+    "requireConfigFile": false,
     "parserOptions": {
-      "parser": "@babel/eslint-parser"
+      "parser": "@babel/eslint-parser",
+      "requireConfigFile": false
     },
-    "rules": {}
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-var": "error",
+      "no-console": "warn",
+      "no-unused-vars": "warn",
+      "no-undef": "error",
+      "no-trailing-spaces": "error",
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "arrow-spacing": [
+        "error",
+        {
+          "before": true,
+          "after": true
+        }
+      ],
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ],
+      "prefer-const": "error",
+      "prefer-arrow-callback": "error",
+      "no-useless-constructor": "error",
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          "max": 1
+        }
+      ],
+      "no-extra-semi": "error",
+      "no-unreachable": "error",
+      "eqeqeq": "error"
+    }
   },
   "browserslist": [
     "> 1%",
