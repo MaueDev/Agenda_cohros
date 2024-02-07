@@ -6,7 +6,7 @@ namespace Agenda\Auth\Domain\Dto;
 
 use Agenda\Auth\Domain\Enum\Dto\AuthLoginEnum;
 use Assert\Assert;
-class AuthLoginDto{
+class AuthenticationDto{
     private string $username;
     private string $password;
     public function __construct()
