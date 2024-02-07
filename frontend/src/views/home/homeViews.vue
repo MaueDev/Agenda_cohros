@@ -1,21 +1,34 @@
 <template>
   <body>
       <div class="login-container">
-          <div class="login-inputs">
+          <form @submit.prevent="login" class="login-inputs">
             <div class="logo">
               <span>A</span>genda
             </div>
-            <input type="text" placeholder="Usuario">
-            <input type="password" placeholder="Senha">
-            <button class="login-button">Login</button>
-          </div>
+            <input v-model="user.username" type="text" placeholder="Usuario">
+            <input v-model="user.password" type="password" placeholder="Senha">
+            <button type="submit" class="login-button">Login</button>
+          </form>
       </div>
   </body>
 </template>
 
-<script>
-export default {
-  name: 'HomeViews'
+<script setup>
+import http from '@/services/http.js'
+import { reactive } from 'vue'
+
+const user = reactive({
+  username: '',
+  password: ''
+})
+
+async function login(){
+  try {
+    const {data} = await http.post('/auth',user)
+    console.log(data)
+  } catch (error) {
+    console.log(error?.reponse?.data)
+  }
 }
 </script>
 

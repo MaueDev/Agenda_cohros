@@ -1,5 +1,5 @@
 <template>
-    <router-view class="main_content"></router-view>
+  <router-view class="main_content"></router-view>
 </template>
 
 <script>
@@ -20,7 +20,7 @@ export default {
   --dark-gray: #333;
   --light-gray: #f0f0f0;
 }
-.main_content{
-  background-color: var(---beckgroud);
+.main_content {
+  background-color: var(--background-gradient);
 }
 </style>

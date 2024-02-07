@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^1.6.7",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "^4.2.5"
@@ -30,65 +31,10 @@
       "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
-    "requireConfigFile": false,
     "parserOptions": {
-      "parser": "@babel/eslint-parser",
-      "requireConfigFile": false
+      "parser": "@babel/eslint-parser"
     },
-    "rules": {
-      "indent": [
-        "error",
-        2
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "no-var": "error",
-      "no-console": "warn",
-      "no-unused-vars": "warn",
-      "no-undef": "error",
-      "no-trailing-spaces": "error",
-      "comma-dangle": [
-        "error",
-        "never"
-      ],
-      "arrow-spacing": [
-        "error",
-        {
-          "before": true,
-          "after": true
-        }
-      ],
-      "space-before-function-paren": [
-        "error",
-        "never"
-      ],
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ],
-      "array-bracket-spacing": [
-        "error",
-        "never"
-      ],
-      "prefer-const": "error",
-      "prefer-arrow-callback": "error",
-      "no-useless-constructor": "error",
-      "no-multiple-empty-lines": [
-        "error",
-        {
-          "max": 1
-        }
-      ],
-      "no-extra-semi": "error",
-      "no-unreachable": "error",
-      "eqeqeq": "error"
-    }
+    "rules": {}
   },
   "browserslist": [
     "> 1%",

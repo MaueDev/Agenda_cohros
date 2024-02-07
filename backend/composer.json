@@ -1,0 +1,17 @@
+{
+    "name": "mauedev/agendaapi",
+    "autoload": {
+        "psr-4": {
+            "Agenda\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MaueDev",
+            "email": "mauricio.rsc.mg@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "3.*"
+    }
+}
