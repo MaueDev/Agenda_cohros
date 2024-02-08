@@ -2,9 +2,7 @@
   <body>
       <div class="login-container">
           <form @submit.prevent="login" class="login-inputs">
-            <div class="logo">
-              <span>A</span>genda
-            </div>
+            <LogoComponent></LogoComponent>
             <input v-model="user.username" type="text" placeholder="Usuario">
             <input v-model="user.password" type="password" placeholder="Senha">
             <button type="submit" class="login-button">Login</button>
@@ -17,7 +15,8 @@
 import http from '@/services/http.js'
 import { reactive } from 'vue'
 import {useAuthStore} from '@/stores/auth.js'
-
+import router from '@/router'; 
+import LogoComponent from '../Component/logoComponent.vue';
 const auth = useAuthStore();
 const user = reactive({
   username: '',
@@ -29,6 +28,7 @@ async function login(){
     const {data} = await http.post('/auth',user)
     auth.setToken(data.token)
     auth.setUser(data.name)
+    router.push({ name: 'dashbord' });
   } catch (error) {
     console.log(error?.reponse?.data)
   }
@@ -64,6 +64,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 15px;
   width: 100%;
 }
@@ -81,35 +82,6 @@ input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
   border: 2px solid rgba(60, 155, 210, 0.5);
-}
-
-.logo {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 36px;
-  font-weight: bold;
-  color: var(--dark-gray);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  align-self: center;
-}
-
-.logo span {
-  position: relative;
-}
-
-.logo span::after {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background-color: var(--light-blue);
-  border-radius: 50%;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .login-button {

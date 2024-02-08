@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/home/homeViews.vue';
+import Dashbord from '../views/home/dashbordViews.vue';
 import { useAuthStore } from '@/stores/auth';
+import menuComponent from '@/views/Component/menuComponent';
+import contactsComponent from '@/views/Component/contactsComponent';
 const routes = [{
 
   path: '/',
@@ -11,7 +14,18 @@ const routes = [{
 
   path: '/dashbord',
   name: 'dashbord',
-  component:Home,
+  component:Dashbord,
+  children:[
+    {
+      path: '',
+      component: menuComponent
+    },
+    {
+      path: 'contacts',
+      name: 'contacts',
+      component: contactsComponent
+    }
+  ],
   meta:{
     auth:true
   }
