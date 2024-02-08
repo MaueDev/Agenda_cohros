@@ -16,7 +16,9 @@
 <script setup>
 import http from '@/services/http.js'
 import { reactive } from 'vue'
+import {useAuthStore} from '@/stores/auth.js'
 
+const auth = useAuthStore();
 const user = reactive({
   username: '',
   password: ''
@@ -25,7 +27,8 @@ const user = reactive({
 async function login(){
   try {
     const {data} = await http.post('/auth',user)
-    console.log(data)
+    auth.setToken(data.token)
+    auth.setUser(data.name)
   } catch (error) {
     console.log(error?.reponse?.data)
   }
