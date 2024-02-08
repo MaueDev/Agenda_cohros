@@ -29,4 +29,12 @@ class AuthenticationDto{
 
         return $instance;
     }
+
+    public function getPassword(): string{
+        return $this->password;
+    }
+
+    public function getUsername(): string{
+        return $this->username;
+    }
 }

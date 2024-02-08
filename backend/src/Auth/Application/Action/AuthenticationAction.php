@@ -18,7 +18,6 @@ class AuthenticationAction{
     public function __invoke(Request $request, Response $response, array $args) {
         $params = (array)$request->getParsedBody();
         $paramsDto = AuthenticationDto::fromArray($params);
-
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $this->container->get(AuthenticationService::class);
         $authenticationService->authenticate($paramsDto);

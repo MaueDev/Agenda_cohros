@@ -10,10 +10,15 @@ services:
             - '.:/application'
         environment:
             - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=root
-            - MYSQL_PASSWORD=root123
+            - MYSQL_DATABASE=agenda
+            - MYSQL_USER=agenda
+            - MYSQL_PASSWORD=agenda123
+        command:
+            --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
         ports:
             - '37002:3306'
+        networks:
+            - agenda_websocket
 
     webserver:
         image: 'nginx:alpine'
@@ -24,10 +29,27 @@ services:
         ports:
             - '37000:80'
             - '37001:37001'
-
+        networks:
+            - agenda_websocket
     php-fpm:
         build: phpdocker/php-fpm
         working_dir: /application
         volumes:
             - '.:/application'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
+        networks:
+            - agenda_websocket
+    
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - mysql
+        ports:
+            - '37003:80'
+        environment:
+            - PMA_ARBITRARY=1
+            - MYSQL_ROOT_PASSWORD=root
+        networks:
+            - agenda_websocket
+networks:
+  agenda_websocket:
