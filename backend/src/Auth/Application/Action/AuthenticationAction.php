@@ -20,7 +20,8 @@ class AuthenticationAction{
         $paramsDto = AuthenticationDto::fromArray($params);
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $this->container->get(AuthenticationService::class);
-        $authenticationService->authenticate($paramsDto);
-
+        $authetincation = $authenticationService->authenticate($paramsDto);
+        $response->getBody()->write(json_encode($authetincation));
+        return $response;
     }
 }

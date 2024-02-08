@@ -17,7 +17,7 @@ AuthInjector::inject($app);
 
 //Middleware
 $app->add(new ErrorHandler());
-$app->add(new CorsMiddleware());
+//$app->add(new CorsMiddleware());
 
 //Routes
 AuthControllers::routes($app);

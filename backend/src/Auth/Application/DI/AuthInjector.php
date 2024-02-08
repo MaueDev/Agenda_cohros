@@ -2,6 +2,7 @@
 namespace Agenda\Auth\Application\DI;
 
 use Agenda\Auth\Domain\Services\AuthenticationService;
+use Agenda\Auth\Infrastructure\JWT\Jwt;
 use Agenda\Auth\Infrastructure\ReadModel\DoctrineOrm\GetUsersFromDoctrineOrm;
 use Agenda\Core\Infrastructure\Db\DoctrineConfiguration;
 use Psr\Container\ContainerInterface;
@@ -24,8 +25,13 @@ class AuthInjector
         
         $container[AuthenticationService::class] = function (ContainerInterface $container) {
             return new AuthenticationService(
-                $container->get(GetUsersFromDoctrineOrm::class)
+                $container->get(GetUsersFromDoctrineOrm::class),
+                $container->get(Jwt::class)
             );
+        };
+
+        $container[Jwt::class] = function (ContainerInterface $container) {
+            return new Jwt();
         };
 
         

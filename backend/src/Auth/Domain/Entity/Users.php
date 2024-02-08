@@ -22,6 +22,12 @@ class Users
     private string $username;
 
     #[Column(type: "string", length: 32, nullable: false)]
+    private string $name;
+
+    #[Column(type: "string", length: 32, nullable: false)]
+    private string $email;
+
+    #[Column(type: "string", length: 32, nullable: false)]
     private string $password;
 
     public function getId(): ?int
@@ -32,5 +38,20 @@ class Users
     public function getUsername(): ?string
     {
         return $this->username;
+    }
+
+    public function getName(): ?string{
+        return $this->name;
+    }
+
+    public function getEmail(): ?string{
+        return $this->email;
+    }
+
+    public function getPublicValue():array{
+        return [
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+        ];
     }
 }
