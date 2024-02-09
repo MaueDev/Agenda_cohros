@@ -2,11 +2,11 @@
   <div class="contacts-container">
   <div class="contacts-header">
     <div class="search-container">
-      <input class="search-input" @change="search" type="text" placeholder="Pesquisar" v-model="searchText"/>
+      <input class="input" @change="search" type="text" placeholder="Pesquisar" v-model="searchText"/>
       <button class="search-button" @click="search">Pesquisar</button>
     </div>
     <div class="button-container"> 
-      <button class="create-button">Criar</button>
+      <button @click="goTocreateContacts()" class="create-button">Criar</button>
     </div>
   </div>
   <hr class="separator">
@@ -34,7 +34,6 @@
     </tr>
   </tbody>
 </table>
-
 </div>
   <div class="pagination">
     <button @click="previousPage" :disabled="currentPage === 1" :class="{ active: currentPage !== 1 }">Anterior</button>
@@ -49,6 +48,7 @@ import http from '@/services/http';
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { ref, computed } from 'vue';
+import router from '@/router'; 
 
 const auth = useAuthStore();
 const contacts = ref([])
@@ -56,6 +56,9 @@ const searchText = ref('');
 const currentPage = ref(1);
 const pageSize = 9
 
+const goTocreateContacts = ()=>{
+  router.push({ name: 'createContacts' });
+}
 const fetchData = async () => {
 try {
   const tokenAuth = 'Bearer ' + auth.token
@@ -131,23 +134,27 @@ margin-left: 1%;
 width: 78.5%;
 }
 .contacts-container{
-font-family: 'Helvetica Neue', sans-serif;
-display: flex;
-flex-direction: column;
-width: 100%;
-margin:15px 0 0 0;
-padding: 5px 0 5px 0;
-background-color: #fcfcfc;
-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 40px 2px 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100%;
+  font-family: 'Helvetica Neue', sans-serif;
+  width: 100%;
+  margin:15px 0 0 0;
+  padding: 5px 0 5px 0;
+  background-color: #fcfcfc;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 .contacts-header{
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
-width: 100%;
-gap:1%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  gap:1%;
 }
-.search-input {
+.input {
 width: 100%;
 padding: 10px;
 border-radius: 5px;
@@ -155,7 +162,7 @@ box-sizing: border-box;
 border: 2px solid rgba(60, 155, 210, 0.5);
 }
 
-.search-input:focus {
+.input:focus {
 outline: none;
 border: 2px solid rgba(60, 155, 210, 0.5);
 }
@@ -197,15 +204,15 @@ color: #333333; /* Cor do texto */
 }
 
 .pagination {
-position: absolute;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-padding: 10px 0;
-background-color: #fff;
-box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-width: 100%;
-text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 0;
+  background-color: #fff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  text-align: center;
 }
 .pagination button {
 padding: 8px 12px;
@@ -223,19 +230,5 @@ background-color: rgba(60, 155, 210, 0.8);
 
 .pagination button.active {
 background-color: rgba(60, 155, 210, 1);
-}
-
-.tabela-container{
-    width: 100%; 
-    min-height: 380px;
-    overflow: auto; 
-}
-
-@media only screen and (max-height: 300px) {
-    .tabela-container{
-      width: 100%; 
-      max-height: 300px;
-      overflow: auto; 
-}
 }
 </style>

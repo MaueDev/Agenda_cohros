@@ -15,7 +15,6 @@
 import http from '@/services/http.js'
 import { reactive } from 'vue'
 import {useAuthStore} from '@/stores/auth.js'
-import router from '@/router'; 
 import LogoComponent from '../Component/logoComponent.vue';
 const auth = useAuthStore();
 const user = reactive({
@@ -28,7 +27,7 @@ async function login(){
     const {data} = await http.post('/auth',user)
     auth.setToken(data.token)
     auth.setUser(data.name)
-    router.push({ name: 'dashbord' });
+    window.location.href = 'dashbord'
   } catch (error) {
     console.log(error?.reponse?.data)
   }

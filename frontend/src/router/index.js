@@ -4,6 +4,7 @@ import Dashbord from '../views/home/dashbordViews.vue';
 import { useAuthStore } from '@/stores/auth';
 import menuComponent from '@/views/Component/menuComponent';
 import contactsComponent from '@/views/Component/contactsComponent';
+import createContactsComponent from '@/views/Component/createContactsComponent';
 const routes = [{
 
   path: '/',
@@ -24,6 +25,11 @@ const routes = [{
       path: 'contacts',
       name: 'contacts',
       component: contactsComponent
+    },
+    {
+      path: 'contacts/criar',
+      name: 'createContacts',
+      component: createContactsComponent
     }
   ],
   meta:{
