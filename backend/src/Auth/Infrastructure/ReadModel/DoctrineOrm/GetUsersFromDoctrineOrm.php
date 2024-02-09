@@ -17,7 +17,6 @@ class GetUsersFromDoctrineOrm implements GetUsers{
     }
 
     public function byUsernameAndPassword(string $username,string $password): Users{
-
         $user = $this->entityManager->getRepository(Users::class)->findOneBy(
             [
                 'username' => $username,
@@ -25,7 +24,20 @@ class GetUsersFromDoctrineOrm implements GetUsers{
             ]
         );
         if (!$user instanceof Users) {
-            throw UserNotFound::ByUsernameAndPassword();
+            throw UserNotFound::byUsernameAndPassword();
+        }
+        return $user;
+    }
+
+    public function getByNameAndEmail(string $name,string $email): Users{
+        $user = $this->entityManager->getRepository(Users::class)->findOneBy(
+            [
+                'name' => $name,
+                'email' => $email,
+            ]
+        );
+        if (!$user instanceof Users) {
+            throw UserNotFound::byNameAndEmail();
         }
         return $user;
     }

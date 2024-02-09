@@ -8,10 +8,17 @@ use DomainException;
 
 class UserNotFound extends DomainException
 {
-    public static function ByUsernameAndPassword(): self
+    public static function byUsernameAndPassword(): self
     {
         return new self(
             sprintf('Usuario ou senha não encontrado')
+        );
+    }
+
+    public static function byNameAndEmail(): self
+    {
+        return new self(
+            sprintf('Nome e e-mail não encontrado')
         );
     }
 }

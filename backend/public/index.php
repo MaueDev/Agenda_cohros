@@ -1,6 +1,8 @@
 <?php
 use Agenda\Auth\Application\Controllers\AuthControllers;
 use Agenda\Auth\Application\DI\AuthInjector;
+use Agenda\Contacts\Application\Controllers\ContactsControllers;
+use Agenda\Contacts\Application\DI\ContactsInjector;
 use Agenda\Core\Application\DI\DoctrineInjector;
 use Agenda\Core\Application\Middleware\CorsMiddleware;
 use Agenda\Core\Application\Middleware\ErrorHandler;
@@ -14,6 +16,7 @@ $app = new App($container);
 //Dependency Injection
 DoctrineInjector::inject($app);
 AuthInjector::inject($app);
+ContactsInjector::inject($app);
 
 //Middleware
 $app->add(new ErrorHandler());
@@ -21,5 +24,6 @@ $app->add(new ErrorHandler());
 
 //Routes
 AuthControllers::routes($app);
+ContactsControllers::routes($app);
 
 $app->run();

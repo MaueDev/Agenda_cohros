@@ -19,5 +19,8 @@
         "doctrine/dbal": "^4",
         "symfony/cache": "^7.0",
         "firebase/php-jwt": "^6.10"
+    },
+    "require-dev": {
+        "doctrine/data-fixtures": "^1.7"
     }
 }

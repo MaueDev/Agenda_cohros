@@ -24,11 +24,18 @@ class Jwt{
         $key = date('Ymd').'agenda';
 
         $payload = [
-            'exp' => time() + 2000,
+            'exp' => time() + 20000,
             'iat' => time(),
             'data' => $users->getPublicValue()
         ];
 
         return JWTFirebase::encode($payload,$key,'HS256');
+    }
+
+    public function decode(string $header)
+    {
+        $token = str_replace('Bearer ','',$header);
+        $key = date('Ymd') . 'agenda';
+        return JWTFirebase::decode($token, new Key($key, 'HS256'));
     }
 }

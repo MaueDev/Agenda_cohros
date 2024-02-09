@@ -1,11 +1,13 @@
-<?php
+<?php 
 
 require __DIR__.'/vendor/autoload.php';
 
+use Agenda\Core\Domain\Seeder\PopulateInitialSeeder;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
-use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
-use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;
 use Doctrine\DBAL\DriverManager;
 
@@ -24,7 +26,14 @@ $connection = DriverManager::getConnection([
     'host' => 'mysql',
     'driver' => 'pdo_mysql',
 ]);
-
 $entityManager = new EntityManager($connection, $ORMConfig);
 
-return DependencyFactory::fromEntityManager($config, new ExistingEntityManager($entityManager));
+$loader = new Loader();
+$loader->addFixture(new PopulateInitialSeeder());
+$fixtures = $loader->getFixtures();
+
+
+$executor = new ORMExecutor($entityManager, new ORMPurger());
+$executor->execute($loader->getFixtures());
+
+echo "Seeder executado com sucesso.\n";

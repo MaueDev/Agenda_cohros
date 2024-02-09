@@ -37,7 +37,29 @@
 </template>
 
 <script setup>
+import http from '@/services/http';
+import { onMounted } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 
+const auth = useAuthStore();
+const fetchData = async () => {
+  try {
+    const tokenAuth = 'Bearer ' + auth.token
+    const response = await http.get('/contacts', {
+                headers: {
+                    Authorization: tokenAuth
+                }
+            });
+
+    console.log(response.data); // A resposta da API
+  } catch (error) {
+    console.error('Erro ao fazer requisição:', error);
+  }
+};
+
+onMounted(() => {
+  fetchData(); 
+});
 </script>
 
 <style>

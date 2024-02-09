@@ -15,7 +15,6 @@ class Users
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue]
-    
     private int $id;
 
     #[Column(type: "string", length: 32, unique: true, nullable: false)]
@@ -24,7 +23,7 @@ class Users
     #[Column(type: "string", length: 32, nullable: false)]
     private string $name;
 
-    #[Column(type: "string", length: 32, nullable: false)]
+    #[Column(type: "string", length: 32, unique: true, nullable: false)]
     private string $email;
 
     #[Column(type: "string", length: 32, nullable: false)]
@@ -35,17 +34,43 @@ class Users
         return $this->id;
     }
 
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
     public function getUsername(): ?string
     {
         return $this->username;
+    }
+
+    public function setUsername(string $username)
+    {
+        $this->username = $username;
     }
 
     public function getName(): ?string{
         return $this->name;
     }
 
+    public function setName(string $name){
+        $this->name = $name;
+    }
+
     public function getEmail(): ?string{
         return $this->email;
+    }
+
+    public function setEmail(string $email){
+        $this->email = $email;
+    }
+
+    public function getPassword(): string {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void {
+        $this->password = $password;
     }
 
     public function getPublicValue():array{
@@ -54,4 +79,5 @@ class Users
             'email' => $this->getEmail(),
         ];
     }
+
 }
