@@ -10,6 +10,7 @@ import Logo from '@/views/Component/logoComponent.vue'
 </script>
 
 <style>
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
 .header-dashbord{
     width: 100%;
     min-height: 78px;
