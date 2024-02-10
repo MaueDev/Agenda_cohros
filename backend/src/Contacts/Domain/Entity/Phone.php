@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Agenda\Contacts\Domain\Entity;
 
-use Agenda\Auth\Domain\Entity\Users;
+use Agenda\Contacts\Domain\Dto\SavePhoneDto;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
 #[Table(name: 'phones')]
-class Phone{
+class Phone
+{
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
@@ -39,5 +42,12 @@ class Phone{
     public function setContacts(Contacts $contacts): void
     {
         $this->contacts = $contacts;
+    }
+
+    public static function setCollectionContacts(SavePhoneDto $phoneDto): self
+    {
+        $entity         = new self();
+        $entity->number = $phoneDto->getNumber();
+        return $entity;
     }
 }

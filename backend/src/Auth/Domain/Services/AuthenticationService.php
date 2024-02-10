@@ -8,15 +8,16 @@ use Agenda\Auth\Domain\Dto\AuthenticationDto;
 use Agenda\Auth\Domain\ReadModel\GetUsers;
 use Agenda\Auth\Infrastructure\JWT\Jwt;
 
-class AuthenticationService{
-
+class AuthenticationService
+{
     public function __construct(
         private GetUsers $getUser,
         private Jwt $jwt
-    ){
-
+    ) {
     }
-    public function authenticate(AuthenticationDto $authenticationDto): array{
+
+    public function authenticate(AuthenticationDto $authenticationDto): array
+    {
         $user = $this->getUser->byUsernameAndPassword(
             $authenticationDto->getUsername(),
             $authenticationDto->getPassword()
@@ -25,9 +26,8 @@ class AuthenticationService{
         $token = $this->jwt->create($user);
         return [
             'token' => $token,
-            'name' => $user->getName(),
+            'name'  => $user->getName(),
             'email' => $user->getEmail(),
         ];
-        
     }
 }

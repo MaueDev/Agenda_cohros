@@ -1,20 +1,27 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Agenda\Contacts\Domain\Entity;
 
 use Agenda\Auth\Domain\Entity\Users;
+use Agenda\Contacts\Domain\Dto\SaveContactsDto;
+use Agenda\Contacts\Domain\Dto\SavePhoneDto;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
 #[Table(name: 'contacts')]
-class Contacts{
+class Contacts
+{
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue]
@@ -69,12 +76,29 @@ class Contacts{
     public function getAllValues(): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
+            'id'      => $this->id,
+            'name'    => $this->name,
+            'email'   => $this->email,
             'address' => $this->address,
-            'user' => $this->user
+            'user'    => $this->user,
         ];
     }
-    
+
+    public static function setFromDto(
+        SaveContactsDto $saveContactsDto,
+        Users $users
+    ): self {
+        $entity          = new self();
+        $entity->name    = $saveContactsDto->getName();
+        $entity->email   = $saveContactsDto->getEmail();
+        $entity->address = $saveContactsDto->getAddress();
+        $entity->user    = $users;
+
+        $phonesCollection = new ArrayCollection();
+        $phonesCollection->clear();
+        array_map(function (SavePhoneDto $phone) use ($phonesCollection) {
+            $phonesCollection->add(Phone::setCollectionContacts($phone));
+        }, $saveContactsDto->getPhones());
+        return $entity;
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Agenda\Core\Application\Middleware;
 
 use DomainException;
@@ -9,20 +11,21 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Throwable;
 
-class ErrorHandler{
+class ErrorHandler
+{
     public function __invoke(Request $request, Response $response, callable $next): Response
     {
         try {
             $response = $next($request, $response);
-        }catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $response = $response
                 ->withStatus(400)
                 ->withJson([
                     'status_code' => 400,
                     'type'        => 'InvalidParameter',
                     'messages'    => [$e->getMessage()],
-                ]) ;
-        }catch (DomainException $e) {
+                ]);
+        } catch (DomainException $e) {
             $response = $response
                 ->withStatus(409)
                 ->withJson([

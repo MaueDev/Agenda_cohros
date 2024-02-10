@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Agenda\Auth\Domain\Entity;
 
 use Doctrine\ORM\Mapping\Column;
@@ -49,35 +51,41 @@ class Users
         $this->username = $username;
     }
 
-    public function getName(): ?string{
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function setName(string $name){
+    public function setName(string $name)
+    {
         $this->name = $name;
     }
 
-    public function getEmail(): ?string{
+    public function getEmail(): ?string
+    {
         return $this->email;
     }
 
-    public function setEmail(string $email){
+    public function setEmail(string $email)
+    {
         $this->email = $email;
     }
 
-    public function getPassword(): string {
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function setPassword(string $password): void {
+    public function setPassword(string $password): void
+    {
         $this->password = $password;
     }
 
-    public function getPublicValue():array{
+    public function getPublicValue(): array
+    {
         return [
-            'name' => $this->getName(),
+            'name'  => $this->getName(),
             'email' => $this->getEmail(),
         ];
     }
-
 }

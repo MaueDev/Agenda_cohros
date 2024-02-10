@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Agenda\Auth\Application\DI;
 
 use Agenda\Auth\Domain\ReadModel\GetUsers;
@@ -12,18 +15,16 @@ use Slim\Container;
 
 class AuthInjector
 {
-    
     public static function inject(App $app): Container
     {
         $container = $app->getContainer();
 
-        $container[GetUsers::class] = function (ContainerInterface $container)
-        {
+        $container[GetUsers::class] = function (ContainerInterface $container) {
             return new GetUsersFromDoctrineOrm(
                 $container->get(DoctrineConfiguration::class)
             );
         };
-        
+
         $container[AuthenticationService::class] = function (ContainerInterface $container) {
             return new AuthenticationService(
                 $container->get(GetUsers::class),
@@ -35,7 +36,6 @@ class AuthInjector
             return new Jwt();
         };
 
-        
         return $container;
     }
 }

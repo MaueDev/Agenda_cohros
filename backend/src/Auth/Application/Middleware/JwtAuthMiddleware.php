@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Agenda\Auth\Application\Middleware;
 
 use Agenda\Auth\Infrastructure\JWT\Jwt;
+use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 class JwtAuthMiddleware
 {
-    protected $jwt;
+    protected Jwt $jwt;
 
     public function __construct(Jwt $jwt)
     {
         $this->jwt = $jwt;
     }
 
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(Request $request, Response $response, callable $next): Response
     {
         $token = $request->getHeaderLine('Authorization');
         if (empty($token)) {
@@ -25,7 +28,7 @@ class JwtAuthMiddleware
         try {
             $decodedToken = $this->jwt->validate($token);
             return $next($request->withAttribute('user', $decodedToken), $response);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $response->withStatus(401)->withJson(['error' => $e->getMessage()]);
         }
     }

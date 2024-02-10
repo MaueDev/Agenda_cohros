@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Domain\Dto;
 
-use Agenda\Auth\Domain\Enum\Dto\AuthLoginEnum;
 use Assert\Assert;
-class GetContatcsDto{
+
+class GetContatcsDto
+{
     private string $header;
     public function __construct()
     {
@@ -15,7 +16,7 @@ class GetContatcsDto{
     public static function fromHeader(string $header): self
     {
         $instance = new self();
-        $token = str_replace('Bearer ','',$header);
+        $token    = str_replace('Bearer ', '', $header);
         Assert::thatNullOr($header)
             ->notEmpty('Cabeçalho de autorização não pode estar vazio.');
         Assert::thatNullOr($token)
@@ -26,7 +27,8 @@ class GetContatcsDto{
         return $instance;
     }
 
-    public function getHeader(): string{
+    public function getHeader(): string
+    {
         return $this->header;
     }
 }

@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+declare(strict_types=1);
 
 namespace Agenda\Contacts\Application\Action;
 
@@ -6,26 +8,28 @@ use Agenda\Contacts\Domain\Dto\GetContatcsDto;
 use Agenda\Contacts\Domain\Entity\Contacts;
 use Agenda\Contacts\Domain\Service\GetContactsService;
 use Psr\Container\ContainerInterface;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-class GetContactsAction{
-
+class GetContactsAction
+{
     private ContainerInterface $container;
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    public function __invoke(Request $request, Response $response, array $args) {
-        $header = $request->getHeaderLine('Authorization');
+
+    public function __invoke(Request $request, Response $response): Response
+    {
+        $header    = $request->getHeaderLine('Authorization');
         $headerDto = GetContatcsDto::fromHeader($header);
         /** @var GetContactsService $getContactsService */
         $getContactsService = $this->container->get(GetContactsService::class);
-        $contacts = $getContactsService->getContacts($headerDto);
+        $contacts           = $getContactsService->getContacts($headerDto);
 
         $response->getBody()
                 ->write(json_encode(
-                    array_map(function(Contacts $contact){
+                    array_map(function (Contacts $contact) {
                         return $contact->getAllValues();
                     }, $contacts)
                 ));

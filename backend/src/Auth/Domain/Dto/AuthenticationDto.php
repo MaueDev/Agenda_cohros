@@ -6,7 +6,9 @@ namespace Agenda\Auth\Domain\Dto;
 
 use Agenda\Auth\Domain\Enum\Dto\AuthLoginEnum;
 use Assert\Assert;
-class AuthenticationDto{
+
+class AuthenticationDto
+{
     private string $username;
     private string $password;
     public function __construct()
@@ -22,8 +24,6 @@ class AuthenticationDto{
         Assert::thatNullOr($params['password'])
             ->notEmpty(AuthLoginEnum::EMPTY_PASSWORD->value)
             ->string(AuthLoginEnum::STRING_PASSWORD->value);
-            
-        
 
         $instance->username = $params['username'];
         $instance->password = $params['password'];
@@ -31,11 +31,13 @@ class AuthenticationDto{
         return $instance;
     }
 
-    public function getPassword(): string{
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function getUsername(): string{
+    public function getUsername(): string
+    {
         return $this->username;
     }
 }
