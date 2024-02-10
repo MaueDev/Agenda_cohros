@@ -19,6 +19,15 @@ export default {
   --light-blue: #52E5E7;
   --dark-gray: #333;
   --light-gray: #f0f0f0;
+  --modal-background-color: #fefefe;
+  --border-color: #888;
+  --text-color: #aaa;
+  --container-background-color: #fcfcfc;
+  --button-text-color: #fff;
+  --edit-button-color: rgba(60, 155, 210, 0.7);
+  --edit-button-hover-color: rgba(60, 155, 210, 0.9);
+  --remove-button-color: #e74c3c;
+  --remove-button-hover-color: #c0392b;
 }
 .main_content {
   background-color: var(--background-gradient);
