@@ -44,10 +44,19 @@ class Phone
         $this->contacts = $contacts;
     }
 
-    public static function setCollectionContacts(SavePhoneDto $phoneDto): self
+    public static function setCollectionContacts(SavePhoneDto $phoneDto, Contacts $contacts): self
     {
-        $entity         = new self();
-        $entity->number = $phoneDto->getNumber();
+        $entity           = new self();
+        $entity->contacts = $contacts;
+        $entity->number   = $phoneDto->getNumber();
         return $entity;
+    }
+
+    public function getAllValues(): array
+    {
+        return [
+            'id'     => $this->id,
+            'number' => $this->number,
+        ];
     }
 }

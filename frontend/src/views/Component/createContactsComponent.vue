@@ -61,10 +61,11 @@
 
 
 <script setup>
-import { ref , computed, reactive } from 'vue';
+import { ref , computed, reactive, onMounted } from 'vue';
 import router from '../../router';
 import http from '@/services/http';
 import {useAuthStore} from '@/stores/auth';
+import { useRouter } from 'vue-router'; 
 let phoneNumberInput = ref('')
 let searchPhones = ref('')
 let showModalNumber = ref(false)
@@ -134,13 +135,32 @@ const validatePhone= ()=> {
     phoneNumberInput.value = phoneNumberInput.value.replace(/\D/g, '') 
                                .replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); 
 }
-
-
 const filteredPhones = computed(() => {
   const searchLower = searchPhones.value.toLowerCase();
   return phonesList.value.filter(phone => {
     return phone.toLowerCase().includes(searchLower);
   });
+});
+const fetchContacts = async () => {
+    const router = useRouter();
+    const id = router.currentRoute.value.params.id;
+    if (id) {
+        console.log('teste')
+        try {
+            const tokenAuth = 'Bearer ' + auth.token
+            const response = await http.get('/contacts/' + id, {
+                headers: {
+                    Authorization: tokenAuth
+                }
+            });
+            console.log(response.data)
+        } catch (error) {
+            console.error('Erro ao fazer requisição:', error);
+        }
+    }
+}
+onMounted(() => {
+fetchContacts();
 });
 </script>
 

@@ -13,7 +13,7 @@ export default {
 
 <style>
 :root {
-  --background-gradient: linear-gradient(135deg, #52E5E7 10%, #130CB7 100%);
+  --background-gradient: linear-gradient(135deg, var(--light-blue, #52E5E7) 10%, var(--dark-blue, #130CB7) 100%);
   --light-sky-blue: #e6f7ff;
   --dark-blue: #130CB7;
   --light-blue: #52E5E7;
@@ -28,6 +28,9 @@ export default {
   --edit-button-hover-color: rgba(60, 155, 210, 0.9);
   --remove-button-color: #e74c3c;
   --remove-button-hover-color: #c0392b;
+  --pagination-active-color: rgba(60, 155, 210, 1);
+  --light-green: #28a745;
+  --darker-green: #218838;
 }
 .main_content {
   background-color: var(--background-gradient);

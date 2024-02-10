@@ -40,8 +40,13 @@ class Contacts
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private Users $user;
 
-    #[OneToMany(targetEntity: Phone::class, mappedBy: 'contact', cascade: ['persist', 'remove'])]
+    #[OneToMany(targetEntity: Phone::class, mappedBy: 'contacts', cascade: ['persist', 'remove'])]
     private Collection $phones;
+
+    public function __construct()
+    {
+        $this->phones = new ArrayCollection();
+    }
 
     public function setId(int $id): void
     {
@@ -80,7 +85,10 @@ class Contacts
             'name'    => $this->name,
             'email'   => $this->email,
             'address' => $this->address,
-            'user'    => $this->user,
+            'phones'
+            => array_map(function (Phone $phone) {
+                return $phone->getAllValues();
+            }, $this->phones->toArray()),
         ];
     }
 
@@ -94,11 +102,12 @@ class Contacts
         $entity->address = $saveContactsDto->getAddress();
         $entity->user    = $users;
 
-        $phonesCollection = new ArrayCollection();
-        $phonesCollection->clear();
-        array_map(function (SavePhoneDto $phone) use ($phonesCollection) {
-            $phonesCollection->add(Phone::setCollectionContacts($phone));
+        $entity->phones = new ArrayCollection();
+        $entity->phones->clear();
+        array_map(function (SavePhoneDto $phone) use ($entity) {
+            $entity->phones->add(Phone::setCollectionContacts($phone, $entity));
         }, $saveContactsDto->getPhones());
+
         return $entity;
     }
 }

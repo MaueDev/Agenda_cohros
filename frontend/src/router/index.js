@@ -30,6 +30,11 @@ const routes = [{
       path: 'contacts/criar',
       name: 'createContacts',
       component: createContactsComponent
+    },
+    {
+      path: 'contacts/edit/:id',
+      name: 'editingContacts',
+      component: createContactsComponent
     }
   ],
   meta:{

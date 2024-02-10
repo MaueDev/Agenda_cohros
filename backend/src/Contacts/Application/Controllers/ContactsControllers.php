@@ -6,6 +6,7 @@ namespace Agenda\Contacts\Application\Controllers;
 
 use Agenda\Auth\Application\Middleware\JwtAuthMiddleware;
 use Agenda\Auth\Infrastructure\JWT\Jwt;
+use Agenda\Contacts\Application\Action\GetContactAction;
 use Agenda\Contacts\Application\Action\GetContactsAction;
 use Agenda\Contacts\Application\Action\SaveContactsAction;
 use Slim\App;
@@ -18,6 +19,7 @@ class ContactsControllers
         $jwtMiddleware = new JwtAuthMiddleware($validarJwt);
 
         $app->get('/contacts', GetContactsAction::class)->add($jwtMiddleware);
+        $app->get('/contacts/{id}', GetContactAction::class)->add($jwtMiddleware);
         $app->post('/contacts', SaveContactsAction::class)->add($jwtMiddleware);
         return $app;
     }
