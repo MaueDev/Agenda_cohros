@@ -12,18 +12,18 @@ class SavePhoneDto
 {
     use PhoneHelper;
 
-    private string $number;
-    public static function fromString(string $number): self
+    private ?string $number;
+    public static function fromString(?string $number): self
     {
         $instance = new self();
         Assert::thatNullOr($number)
             ->string(SavePhoneEnum::STRING_PHONE->value);
 
-        $instance->number = (string) PhoneHelper::unformatPhone($number);
+        $instance->number = PhoneHelper::unformatPhone($number);
         return $instance;
     }
 
-    public function getNumber(): string
+    public function getNumber(): ?string
     {
         return $this->number;
     }

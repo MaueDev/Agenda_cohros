@@ -30,7 +30,7 @@ class SaveContactsAction
         $response
             ->getBody()
             ->write(
-                json_encode(
+                (string) json_encode(
                     [
                         'status-code' => 200,
                     ]

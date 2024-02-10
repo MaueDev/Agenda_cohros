@@ -25,7 +25,7 @@ class AuthenticationAction
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $this->container->get(AuthenticationService::class);
         $authetincation        = $authenticationService->authenticate($paramsDto);
-        $response->getBody()->write(json_encode($authetincation));
+        $response->getBody()->write((string) json_encode($authetincation));
         return $response;
     }
 }

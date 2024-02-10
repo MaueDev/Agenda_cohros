@@ -15,11 +15,10 @@ use Agenda\Contacts\Infrastructure\ReadModel\DoctrineOrm\GetContactsFromDoctrine
 use Agenda\Core\Infrastructure\Db\DoctrineConfiguration;
 use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Container;
 
 class ContactsInjector
 {
-    public static function inject(App $app): Container
+    public static function inject(App $app): ContainerInterface
     {
         $container = $app->getContainer();
 

@@ -28,10 +28,10 @@ class GetContactsAction
         $contacts           = $getContactsService->getContacts($headerDto);
 
         $response->getBody()
-                ->write(json_encode(
+                ->write((string) json_encode(
                     array_map(function (Contacts $contact) {
                         return $contact->getAllValues();
-                    }, $contacts)
+                    }, (array) $contacts)
                 ));
         return $response;
     }

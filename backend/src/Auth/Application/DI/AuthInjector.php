@@ -11,11 +11,10 @@ use Agenda\Auth\Infrastructure\ReadModel\DoctrineOrm\GetUsersFromDoctrineOrm;
 use Agenda\Core\Infrastructure\Db\DoctrineConfiguration;
 use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Container;
 
 class AuthInjector
 {
-    public static function inject(App $app): Container
+    public static function inject(App $app): ContainerInterface
     {
         $container = $app->getContainer();
 

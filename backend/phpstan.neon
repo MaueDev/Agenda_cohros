@@ -1,0 +1,13 @@
+parameters:
+  parallel:
+    processTimeout: 300.0
+  level: 8
+  paths:
+    - src
+  excludePaths:
+    - **/Entity/**
+    - **/Enum/**
+    - **/DI/**
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  treatPhpDocTypesAsCertain: false #remover depois

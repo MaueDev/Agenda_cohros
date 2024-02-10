@@ -7,15 +7,14 @@ namespace Agenda\Core\Application\DI;
 use Agenda\Core\Infrastructure\Db\DoctrineConfiguration;
 use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Container;
 
 class DoctrineInjector
 {
-    public static function inject(App $app): Container
+    public static function inject(App $app): ContainerInterface
     {
         $container = $app->getContainer();
 
-        $container[DoctrineConfiguration::class] = function (ContainerInterface $container) {
+        $container[DoctrineConfiguration::class] = function () {
             return DoctrineConfiguration::entityManager();
         };
 

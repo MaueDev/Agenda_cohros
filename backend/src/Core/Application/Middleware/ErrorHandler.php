@@ -34,16 +34,13 @@ class ErrorHandler
                     'messages'    => [$e->getMessage()],
                 ]);
         } catch (Throwable | Exception $e) {
-            $errors = [
+            $errors                         = [
                 'status_code' => 500,
                 'type'        => 'InternalError',
                 'message'     => ['Internal server error'],
             ];
-
-            if (true) {
                 $errors['internal_message'] = $e->getMessage();
                 $errors['trace']            = $e->getTrace();
-            }
 
             $response = $response
                 ->withStatus(500)

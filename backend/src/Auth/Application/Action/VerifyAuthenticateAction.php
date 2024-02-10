@@ -26,7 +26,7 @@ class VerifyAuthenticateAction
         /** @var Jwt $jwt */
         $jwt     = $this->container->get(Jwt::class);
         $decoded = $jwt->validate($headerDto->getHeader());
-        $response->getBody()->write(json_encode($decoded));
+        $response->getBody()->write((string) json_encode($decoded));
         return $response;
     }
 }

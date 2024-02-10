@@ -31,7 +31,7 @@ class Users
     #[Column(type: "string", length: 32, nullable: false)]
     private string $password;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -6,16 +6,16 @@ namespace Agenda\Contacts\Domain\Traits;
 
 trait PhoneHelper
 {
-    public static function formatPhone(string $phone): string
+    public static function formatPhone(string $phone): ?string
     {
         // Remove parênteses e espaços em branco
         $phone = str_replace(['(', ')', ' '], '', $phone);
         return $phone;
     }
 
-    public static function unformatPhone(string $phone): string
+    public static function unformatPhone(?string $phone): ?string
     {
         // Adiciona parênteses e espaços em branco
-        return preg_replace('/(\d{2})(\d{4,5})(\d{4})/', '($1) $2-$3', $phone);
+        return preg_replace('/(\d{2})(\d{4,5})(\d{4})/', '($1) $2-$3', (string) $phone);
     }
 }

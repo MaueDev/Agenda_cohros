@@ -18,7 +18,7 @@ class GetContactsService
     ) {
     }
 
-    public function getContacts(GetContatcsDto $getContatcsDto): array
+    public function getContacts(GetContatcsDto $getContatcsDto): ?array
     {
         $userData = $this->jwt->decode($getContatcsDto->getHeader());
         $user     = $this->getUser->getByNameAndEmail(
