@@ -7,13 +7,13 @@ namespace Agenda\Contacts\Domain\Dto;
 use Agenda\Contacts\Domain\Enum\Dto\ContactsEnum;
 use Assert\Assert;
 
-class SaveContactsDto
+class UpdateContactDto
 {
+    private int $id;
     private string $name;
     private string $email;
     private string $address;
     private array $phones;
-    private string $authorizationHeader;
     public function __construct()
     {
     }
@@ -21,12 +21,9 @@ class SaveContactsDto
     public static function fromArray(array $params): self
     {
         $instance = new self();
-        $token    = str_replace('Bearer ', '', $params['authorizationHeader']);
-        Assert::that($params['authorizationHeader'])
-            ->notEmpty(ContactsEnum::EMPTY_AUTH_HEADER->value)
-            ->string(ContactsEnum::STRING_AUTH_HEADER->value);
-        Assert::that($token)
-            ->notEmpty(ContactsEnum::EMPTY_AUTH_HEADER->value);
+        Assert::thatNullOr($params['id'])
+            ->notEmpty(ContactsEnum::EMPTY_ID->value)
+            ->integerish(ContactsEnum::INTERGER_ID->value);
 
         Assert::thatNullOr($params['email'])
             ->notEmpty(ContactsEnum::EMPTY_EMAIL->value)
@@ -40,13 +37,13 @@ class SaveContactsDto
         Assert::thatNullOr($params['phones'])
             ->isArray(ContactsEnum::ARRAY_PHONES->value);
 
-        $instance->phones              = array_map(function (string $phone) {
+        $instance->phones  = array_map(function (string $phone) {
             return PhoneDto::fromString($phone);
         }, $params['phones']);
-        $instance->name                = $params['name'];
-        $instance->email               = $params['email'];
-        $instance->address             = $params['address'];
-        $instance->authorizationHeader = $params['authorizationHeader'];
+        $instance->name    = (string) $params['name'];
+        $instance->email   = (string) $params['email'];
+        $instance->address = (string) $params['address'];
+        $instance->id      = (int) $params['id'];
 
         return $instance;
     }
@@ -71,8 +68,8 @@ class SaveContactsDto
         return $this->phones;
     }
 
-    public function getAuthorizationHeader(): string
+    public function getId(): int
     {
-        return $this->authorizationHeader;
+        return $this->id;
     }
 }

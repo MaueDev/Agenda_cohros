@@ -10,6 +10,7 @@ use Agenda\Contacts\Domain\ReadModel\GetContacts;
 use Agenda\Contacts\Domain\Repository\SaveContactsRepository;
 use Agenda\Contacts\Domain\Service\GetContactsService;
 use Agenda\Contacts\Domain\Service\SaveContactsService;
+use Agenda\Contacts\Domain\Service\UpdateContactService;
 use Agenda\Contacts\Infrastructure\Persistence\DoctrineOrm\SaveContactsRepositoryFromDoctrineOrm;
 use Agenda\Contacts\Infrastructure\ReadModel\DoctrineOrm\GetContactsFromDoctrineOrm;
 use Agenda\Core\Infrastructure\Db\DoctrineConfiguration;
@@ -35,6 +36,13 @@ class ContactsInjector
                 $container->get(SaveContactsRepository::class),
                 $container->get(GetUsers::class),
                 $container->get(Jwt::class)
+            );
+        };
+
+        $container[UpdateContactService::class] = function (ContainerInterface $container) {
+            return new UpdateContactService(
+                $container->get(SaveContactsRepository::class),
+                $container->get(GetContacts::class)
             );
         };
 

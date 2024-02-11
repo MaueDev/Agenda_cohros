@@ -42,7 +42,8 @@
         </div>
     </div>
     <div class="action-contacts"> 
-        <button class="create-button" @click="saveContacts()">Salvar</button>
+        <button v-if="alterContact" class="create-button" @click="updateContacts()">Alterar</button>
+        <button v-else class="create-button" @click="saveContacts()">Salvar</button>
         <button class="remove-button" @click="goToContacts()">Voltar</button>
     </div>
     <div v-if="showModalNumber" class="modalPhone"> 
@@ -65,14 +66,15 @@ import { ref , computed, reactive, onMounted } from 'vue';
 import router from '../../router';
 import http from '@/services/http';
 import {useAuthStore} from '@/stores/auth';
-import { useRouter } from 'vue-router'; 
-let phoneNumberInput = ref('')
-let searchPhones = ref('')
-let showModalNumber = ref(false)
+const phoneNumberInput = ref('')
+const searchPhones = ref('')
+const showModalNumber = ref(false)
+const alterContact = ref(false)
+const indexPhone = ref(null)
 const saveClicked = ref(false);
-let indexPhone = ref(null)
 const phonesList = ref([]);
 const auth = useAuthStore();
+const contactId = router.currentRoute.value.params.id;
 const contact = reactive({
   name: '',
   email: '',
@@ -85,6 +87,7 @@ const saveContacts = async () => {
     if (!contact.name.trim() || !contact.email.trim() || !contact.address.trim()) {
     return false;
   }
+ 
     try {
         const tokenAuth = 'Bearer ' + auth.token
         await http.post('/contacts',contact, {
@@ -93,6 +96,26 @@ const saveContacts = async () => {
             }
         });
         router.push({ name: 'contacts' })
+    } catch (error) {
+        console.error('Erro ao fazer requisição:', error);
+    }
+
+}
+
+const updateContacts = async () => {
+    saveClicked.value = true;
+    if (!contact.name.trim() || !contact.email.trim() || !contact.address.trim()) {
+    return false;
+  }
+  contact.phones = phonesList.value;
+    try {
+        const tokenAuth = 'Bearer ' + auth.token
+        await http.put('/contacts/' + contactId,contact, {
+            headers: {
+                Authorization: tokenAuth
+            }
+        });
+        /*router.push({ name: 'contacts' })*/
     } catch (error) {
         console.error('Erro ao fazer requisição:', error);
     }
@@ -121,7 +144,6 @@ const editPhone = (index) =>{
     openModalPhone()
 }
 const addNumber = () => {
-    console.log(contact)
     phonesList.value.push(phoneNumberInput.value)
     phoneNumberInput.value = ''
     closeModalPhone()
@@ -136,27 +158,34 @@ const validatePhone= ()=> {
                                .replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); 
 }
 const filteredPhones = computed(() => {
-  const searchLower = searchPhones.value.toLowerCase();
+  const searchLower = searchPhones.value.toLowerCase().replace(/\D/g, '');
   return phonesList.value.filter(phone => {
-    return phone.toLowerCase().includes(searchLower);
+    const phoneDigitsOnly = phone.replace(/\D/g, ''); 
+    return phoneDigitsOnly.includes(searchLower);
   });
 });
 const fetchContacts = async () => {
-    const router = useRouter();
-    const id = router.currentRoute.value.params.id;
-    if (id) {
-        console.log('teste')
+    
+    if (contactId) {
+        alterContact.value = true;
         try {
             const tokenAuth = 'Bearer ' + auth.token
-            const response = await http.get('/contacts/' + id, {
+            const response = await http.get('/contacts/' + contactId, {
                 headers: {
                     Authorization: tokenAuth
                 }
             });
-            console.log(response.data)
+            populate(response.data)
         } catch (error) {
             console.error('Erro ao fazer requisição:', error);
         }
+    }
+
+    function populate(contactData){
+        contact.name = contactData.name;
+        contact.email = contactData.email;
+        contact.address = contactData.address;
+        phonesList.value = contactData.phones
     }
 }
 onMounted(() => {

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Agenda\Contacts\Domain\Entity;
 
 use Agenda\Auth\Domain\Entity\Users;
+use Agenda\Contacts\Domain\Dto\PhoneDto;
 use Agenda\Contacts\Domain\Dto\SaveContactsDto;
-use Agenda\Contacts\Domain\Dto\SavePhoneDto;
+use Agenda\Contacts\Domain\Dto\UpdateContactDto;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -40,7 +41,7 @@ class Contacts
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private Users $user;
 
-    #[OneToMany(targetEntity: Phone::class, mappedBy: 'contacts', cascade: ['persist', 'remove'])]
+    #[OneToMany(targetEntity: Phone::class, mappedBy: 'contacts', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $phones;
 
     public function __construct()
@@ -87,27 +88,39 @@ class Contacts
             'address' => $this->address,
             'phones'
             => array_map(function (Phone $phone) {
-                return $phone->getAllValues();
+                return $phone->getFormattedNumber();
             }, $this->phones->toArray()),
         ];
     }
 
     public static function setFromDto(
-        SaveContactsDto $saveContactsDto,
+        SaveContactsDto $updateContactDto,
         Users $users
     ): self {
         $entity          = new self();
-        $entity->name    = $saveContactsDto->getName();
-        $entity->email   = $saveContactsDto->getEmail();
-        $entity->address = $saveContactsDto->getAddress();
+        $entity->name    = $updateContactDto->getName();
+        $entity->email   = $updateContactDto->getEmail();
+        $entity->address = $updateContactDto->getAddress();
         $entity->user    = $users;
 
         $entity->phones = new ArrayCollection();
         $entity->phones->clear();
-        array_map(function (SavePhoneDto $phone) use ($entity) {
+        array_map(function (PhoneDto $phone) use ($entity) {
             $entity->phones->add(Phone::setCollectionContacts($phone, $entity));
-        }, $saveContactsDto->getPhones());
+        }, $updateContactDto->getPhones());
 
         return $entity;
+    }
+
+    public function setUpdateFromDto(
+        UpdateContactDto $updateContactDto
+    ): void {
+        $this->name    = $updateContactDto->getName();
+        $this->email   = $updateContactDto->getEmail();
+        $this->address = $updateContactDto->getAddress();
+        $this->phones->clear();
+        array_map(function (PhoneDto $phone) {
+            $this->phones->add(Phone::setCollectionContacts($phone, $this));
+        }, $updateContactDto->getPhones());
     }
 }

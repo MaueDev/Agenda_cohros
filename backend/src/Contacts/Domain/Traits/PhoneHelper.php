@@ -9,7 +9,7 @@ trait PhoneHelper
     public static function formatPhone(string $phone): ?string
     {
         // Remove parênteses e espaços em branco
-        $phone = str_replace(['(', ')', ' '], '', $phone);
+        $phone = str_replace(['(', ')', '-', ' '], '', $phone);
         return $phone;
     }
 

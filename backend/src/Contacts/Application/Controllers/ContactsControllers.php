@@ -9,6 +9,7 @@ use Agenda\Auth\Infrastructure\JWT\Jwt;
 use Agenda\Contacts\Application\Action\GetContactAction;
 use Agenda\Contacts\Application\Action\GetContactsAction;
 use Agenda\Contacts\Application\Action\SaveContactsAction;
+use Agenda\Contacts\Application\Action\UpdateContactAction;
 use Slim\App;
 
 class ContactsControllers
@@ -21,6 +22,7 @@ class ContactsControllers
         $app->get('/contacts', GetContactsAction::class)->add($jwtMiddleware);
         $app->get('/contacts/{id}', GetContactAction::class)->add($jwtMiddleware);
         $app->post('/contacts', SaveContactsAction::class)->add($jwtMiddleware);
+        $app->put('/contacts/{id}', UpdateContactAction::class)->add($jwtMiddleware);
         return $app;
     }
 }

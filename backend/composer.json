@@ -8,7 +8,9 @@
     "scripts": {
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "analyze": "phpstan analyse --memory-limit=4000M -c phpstan.neon"
+        "analyze": "phpstan analyse --memory-limit=4000M -c phpstan.neon",
+        "migrate": "./vendor/bin/doctrine-migrations migrate",
+        "migrate:diff": "./vendor/bin/doctrine-migrations diff"
     },
     "authors": [
         {

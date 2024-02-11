@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Domain\Entity;
 
-use Agenda\Contacts\Domain\Dto\SavePhoneDto;
+use Agenda\Contacts\Domain\Dto\PhoneDto;
+use Agenda\Contacts\Domain\Traits\PhoneHelper;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -17,6 +18,8 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'phones')]
 class Phone
 {
+    use PhoneHelper;
+
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
@@ -44,7 +47,7 @@ class Phone
         $this->contacts = $contacts;
     }
 
-    public static function setCollectionContacts(SavePhoneDto $phoneDto, Contacts $contacts): self
+    public static function setCollectionContacts(PhoneDto $phoneDto, Contacts $contacts): self
     {
         $entity           = new self();
         $entity->contacts = $contacts;
@@ -58,5 +61,15 @@ class Phone
             'id'     => $this->id,
             'number' => $this->number,
         ];
+    }
+
+    public function getNumber(): string
+    {
+        return $this->number;
+    }
+
+    public function getFormattedNumber(): string
+    {
+        return PhoneHelper::unformatPhone($this->number);
     }
 }

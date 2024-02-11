@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Domain\Dto;
 
-use Agenda\Contacts\Domain\Enum\Dto\SavePhoneEnum;
+use Agenda\Contacts\Domain\Enum\Dto\PhoneEnum;
 use Agenda\Contacts\Domain\Traits\PhoneHelper;
 use Assert\Assert;
 
-class SavePhoneDto
+class PhoneDto
 {
     use PhoneHelper;
 
@@ -17,7 +17,7 @@ class SavePhoneDto
     {
         $instance = new self();
         Assert::thatNullOr($number)
-            ->string(SavePhoneEnum::STRING_PHONE->value);
+            ->string(PhoneEnum::STRING_PHONE->value);
 
         $instance->number = PhoneHelper::unformatPhone($number);
         return $instance;

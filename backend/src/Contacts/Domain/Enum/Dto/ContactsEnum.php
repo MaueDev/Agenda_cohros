@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Domain\Enum\Dto;
 
-enum SaveContactsEnum: string
+enum ContactsEnum: string
 {
     case EMPTY_NAME  = 'O nome não pode estar vazio.';
     case STRING_NAME = 'O nome deve ser uma string.';
@@ -20,4 +20,7 @@ enum SaveContactsEnum: string
 
     case EMPTY_AUTH_HEADER  = 'O cabeçalho de autorização não pode estar vazio.';
     case STRING_AUTH_HEADER = 'O cabeçalho de autorização deve ser uma string.';
+
+    case EMPTY_ID    = 'O id não pode estar vazio.';
+    case INTERGER_ID = 'O id deve ser uma inteiro.';
 }
