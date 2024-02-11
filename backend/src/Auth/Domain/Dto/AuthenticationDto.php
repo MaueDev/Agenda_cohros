@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Agenda\Auth\Domain\Dto;
 
-use Agenda\Auth\Domain\Enum\Dto\AuthLoginEnum;
+use Agenda\Auth\Domain\Enum\Dto\AuthEnum;
 use Assert\Assert;
 
 class AuthenticationDto
@@ -19,11 +19,11 @@ class AuthenticationDto
     {
         $instance = new self();
         Assert::thatNullOr($params['username'])
-            ->notEmpty(AuthLoginEnum::EMPTY_USERNAME->value)
-            ->string(AuthLoginEnum::EMPTY_USERNAME->value);
+            ->notEmpty(AuthEnum::EMPTY_USERNAME->value)
+            ->string(AuthEnum::STRING_USERNAME->value);
         Assert::thatNullOr($params['password'])
-            ->notEmpty(AuthLoginEnum::EMPTY_PASSWORD->value)
-            ->string(AuthLoginEnum::STRING_PASSWORD->value);
+            ->notEmpty(AuthEnum::EMPTY_PASSWORD->value)
+            ->string(AuthEnum::STRING_PASSWORD->value);
 
         $instance->username = $params['username'];
         $instance->password = $params['password'];

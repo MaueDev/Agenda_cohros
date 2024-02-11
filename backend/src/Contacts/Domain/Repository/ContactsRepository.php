@@ -6,7 +6,7 @@ namespace Agenda\Contacts\Domain\Repository;
 
 use Agenda\Contacts\Domain\Entity\Contacts;
 
-interface SaveContactsRepository
+interface ContactsRepository
 {
     public function store(Contacts $contacts): void;
 

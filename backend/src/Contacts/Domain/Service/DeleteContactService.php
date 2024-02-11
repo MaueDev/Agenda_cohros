@@ -7,12 +7,12 @@ namespace Agenda\Contacts\Domain\Service;
 use Agenda\Contacts\Domain\Dto\DeleteContactDto;
 use Agenda\Contacts\Domain\Entity\Contacts;
 use Agenda\Contacts\Domain\ReadModel\GetContacts;
-use Agenda\Contacts\Domain\Repository\SaveContactsRepository;
+use Agenda\Contacts\Domain\Repository\ContactsRepository;
 
 class DeleteContactService
 {
     public function __construct(
-        private SaveContactsRepository $saveContactsRepository,
+        private ContactsRepository $saveContactsRepository,
         private GetContacts $getContacts,
     ) {
     }

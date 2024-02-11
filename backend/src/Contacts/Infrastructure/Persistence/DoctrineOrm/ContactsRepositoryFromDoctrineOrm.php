@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Agenda\Contacts\Infrastructure\Persistence\DoctrineOrm;
 
 use Agenda\Contacts\Domain\Entity\Contacts;
-use Agenda\Contacts\Domain\Repository\SaveContactsRepository;
+use Agenda\Contacts\Domain\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManager;
 
-class SaveContactsRepositoryFromDoctrineOrm implements SaveContactsRepository
+class ContactsRepositoryFromDoctrineOrm implements ContactsRepository
 {
     private EntityManager $entityManager;
 

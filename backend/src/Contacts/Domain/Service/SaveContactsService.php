@@ -8,12 +8,12 @@ use Agenda\Auth\Domain\ReadModel\GetUsers;
 use Agenda\Auth\Infrastructure\JWT\Jwt;
 use Agenda\Contacts\Domain\Dto\SaveContactsDto;
 use Agenda\Contacts\Domain\Entity\Contacts;
-use Agenda\Contacts\Domain\Repository\SaveContactsRepository;
+use Agenda\Contacts\Domain\Repository\ContactsRepository;
 
 class SaveContactsService
 {
     public function __construct(
-        private SaveContactsRepository $saveContactsRepository,
+        private ContactsRepository $saveContactsRepository,
         private GetUsers $getUser,
         private Jwt $jwt
     ) {

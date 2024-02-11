@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Agenda\Auth\Domain\Dto;
 
+use Agenda\Auth\Domain\Enum\Dto\AuthEnum;
 use Assert\Assert;
 
 class VerifyAuthenticateDto
@@ -18,9 +19,9 @@ class VerifyAuthenticateDto
         $instance = new self();
         $token    = str_replace('Bearer ', '', $header);
         Assert::thatNullOr($header)
-            ->notEmpty('Cabeçalho de autorização não pode estar vazio.');
+            ->notEmpty(AuthEnum::EMPTY_HEADER->value);
         Assert::thatNullOr($token)
-            ->notEmpty('Cabeçalho de autorização não pode estar vazio.');
+            ->notEmpty(AuthEnum::EMPTY_HEADER->value);
 
         $instance->header = $header;
 
