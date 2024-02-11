@@ -6,7 +6,7 @@ namespace Agenda\Contacts\Domain\Dto;
 
 use Assert\Assert;
 
-class GetContatcsDto
+class GetContactsDto
 {
     private string $header;
     public function __construct()

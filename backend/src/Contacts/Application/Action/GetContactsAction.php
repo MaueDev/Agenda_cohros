@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Application\Action;
 
-use Agenda\Contacts\Domain\Dto\GetContatcsDto;
+use Agenda\Contacts\Domain\Dto\GetContactsDto;
 use Agenda\Contacts\Domain\Entity\Contacts;
 use Agenda\Contacts\Domain\Service\GetContactsService;
 use Psr\Container\ContainerInterface;
@@ -22,7 +22,7 @@ class GetContactsAction
     public function __invoke(Request $request, Response $response): Response
     {
         $header    = $request->getHeaderLine('Authorization');
-        $headerDto = GetContatcsDto::fromHeader($header);
+        $headerDto = GetContactsDto::fromHeader($header);
         /** @var GetContactsService $getContactsService */
         $getContactsService = $this->container->get(GetContactsService::class);
         $contacts           = $getContactsService->getContacts($headerDto);

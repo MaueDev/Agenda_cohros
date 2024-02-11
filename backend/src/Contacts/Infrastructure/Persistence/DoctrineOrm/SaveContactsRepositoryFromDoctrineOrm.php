@@ -25,5 +25,7 @@ class SaveContactsRepositoryFromDoctrineOrm implements SaveContactsRepository
 
     public function remove(Contacts $contacts): void
     {
+        $this->entityManager->remove($contacts);
+        $this->entityManager->flush();
     }
 }

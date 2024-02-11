@@ -8,6 +8,7 @@ use Agenda\Auth\Domain\ReadModel\GetUsers;
 use Agenda\Auth\Infrastructure\JWT\Jwt;
 use Agenda\Contacts\Domain\ReadModel\GetContacts;
 use Agenda\Contacts\Domain\Repository\SaveContactsRepository;
+use Agenda\Contacts\Domain\Service\DeleteContactService;
 use Agenda\Contacts\Domain\Service\GetContactsService;
 use Agenda\Contacts\Domain\Service\SaveContactsService;
 use Agenda\Contacts\Domain\Service\UpdateContactService;
@@ -41,6 +42,13 @@ class ContactsInjector
 
         $container[UpdateContactService::class] = function (ContainerInterface $container) {
             return new UpdateContactService(
+                $container->get(SaveContactsRepository::class),
+                $container->get(GetContacts::class)
+            );
+        };
+
+        $container[DeleteContactService::class] = function (ContainerInterface $container) {
+            return new DeleteContactService(
                 $container->get(SaveContactsRepository::class),
                 $container->get(GetContacts::class)
             );

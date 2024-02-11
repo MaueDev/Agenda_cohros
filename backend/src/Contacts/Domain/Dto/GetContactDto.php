@@ -6,7 +6,7 @@ namespace Agenda\Contacts\Domain\Dto;
 
 use Assert\Assert;
 
-class GetContatcDto
+class GetContactDto
 {
     private int $id;
 

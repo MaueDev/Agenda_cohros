@@ -115,7 +115,7 @@ const updateContacts = async () => {
                 Authorization: tokenAuth
             }
         });
-        /*router.push({ name: 'contacts' })*/
+        router.push({ name: 'contacts' })
     } catch (error) {
         console.error('Erro ao fazer requisição:', error);
     }

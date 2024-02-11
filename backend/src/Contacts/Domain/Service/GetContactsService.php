@@ -6,7 +6,7 @@ namespace Agenda\Contacts\Domain\Service;
 
 use Agenda\Auth\Domain\ReadModel\GetUsers;
 use Agenda\Auth\Infrastructure\JWT\Jwt;
-use Agenda\Contacts\Domain\Dto\GetContatcsDto;
+use Agenda\Contacts\Domain\Dto\GetContactsDto;
 use Agenda\Contacts\Domain\ReadModel\GetContacts;
 
 class GetContactsService
@@ -18,9 +18,9 @@ class GetContactsService
     ) {
     }
 
-    public function getContacts(GetContatcsDto $getContatcsDto): ?array
+    public function getContacts(GetContactsDto $getContactsDto): ?array
     {
-        $userData = $this->jwt->decode($getContatcsDto->getHeader());
+        $userData = $this->jwt->decode($getContactsDto->getHeader());
         $user     = $this->getUser->getByNameAndEmail(
             $userData->data->name,
             $userData->data->email

@@ -34,7 +34,7 @@
       <td>
         <div class="buttons-container">
             <button @click="goToEditContacts(contact.id)" class="search-button">Editar</button>
-            <button @click="removePhone(index)" class="remove-button">Remover</button>
+            <button @click="deleteContacts(contact.id)" class="remove-button">Remover</button>
         </div>
       </td>
     </tr>
@@ -80,6 +80,20 @@ try {
           });
   contacts.value = response.data;
   paginatedContacts
+} catch (error) {
+  console.error('Erro ao fazer requisição:', error);
+}
+};
+
+const deleteContacts = async (id) => {
+try {
+  const tokenAuth = 'Bearer ' + auth.token
+  await http.delete('/contacts/' + id, {
+      headers: {
+          Authorization: tokenAuth
+      }
+  });
+          fetchData()
 } catch (error) {
   console.error('Erro ao fazer requisição:', error);
 }
