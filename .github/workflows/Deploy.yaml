@@ -64,3 +64,4 @@ jobs:
         gcloud compute scp --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --recurse * mauricio_rsc_mg@agenda:./
         gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command " cat /etc/os-release"
         gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command "docker --version"
+        gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command "docker-composer up -d --build"
