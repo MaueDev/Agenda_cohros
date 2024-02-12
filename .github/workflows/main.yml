@@ -1,0 +1,38 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Deploy
+      run: |
+        ls
+        cd ./Agenda_cohros/beckend/
+        docker-compose up -d
+    - name: Install PHP and Composer
+      run: |
+        sudo apt-get update
+        sudo apt-get install php-cli php-zip unzip
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php composer-setup.php
+        php -r "unlink('composer-setup.php');"
+        sudo mv composer.phar /usr/local/bin/composer
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Node.js dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
