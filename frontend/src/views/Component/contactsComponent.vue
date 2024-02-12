@@ -1,146 +1,151 @@
 <template>
   <div class="contacts-container">
-  <div class="contacts-header">
-    <div class="search-container">
-      <input class="input" @change="search" type="text" placeholder="Pesquisar" v-model="searchText"/>
-      <button class="search-button" @click="search">Pesquisar</button>
+    <div class="contacts-header">
+      <button class="return-button"><i class="fas fa-arrow-left"></i></button>
+      <div class="search-container">
+        <input class="input" @change="search" type="text" placeholder="Pesquisar" v-model="searchText" />
+        <button class="search-button" @click="search">Pesquisar</button>
+      </div>
+      <div class="button-container">
+        <button @click="goTocreateContacts()" class="create-button">Criar</button>
+      </div>
     </div>
-    <div class="button-container"> 
-      <button @click="goTocreateContacts()" class="create-button">Criar</button>
+    <hr class="separator">
+    <div class="tabela-container">
+      <table class="table-contacts">
+        <thead>
+          <th>
+            Nome
+          </th>
+          <th>
+            E-mail
+          </th>
+          <th>
+            Endereço
+          </th>
+          <th class="action">
+            Ações
+          </th>
+        </thead>
+        <tbody>
+          <tr v-for="contact in paginatedContacts" v-bind:key="contact.id">
+            <td>{{ contact.name }}</td>
+            <td align="center">{{ contact.email }}</td>
+            <td align="center">{{ contact.address }}</td>
+            <td>
+              <div class="buttons-container">
+                <button @click="goToEditContacts(contact.id)" class="search-button">Editar</button>
+                <button @click="deleteContacts(contact.id)" class="remove-button">Remover</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <button @click="previousPage" :disabled="currentPage === 1" :class="{ active: currentPage !== 1 }">Anterior</button>
+      <button v-for="page in totalPages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }">{{
+        page }}</button>
+      <button @click="nextPage" :disabled="currentPage === totalPages"
+        :class="{ active: currentPage !== totalPages }">Próxima</button>
     </div>
   </div>
-  <hr class="separator">
-  <div class="tabela-container">
-  <table class="table-contacts">
-    <thead>
-      <th>
-        Nome
-      </th>
-      <th>
-        E-mail
-      </th>
-      <th>
-        Endereço
-      </th>
-      <th class="action"> 
-        Ações
-      </th>
-    </thead>
-  <tbody>
-    <tr v-for="contact in paginatedContacts" v-bind:key="contact.id">
-      <td>{{ contact.name }}</td>
-      <td align="center">{{ contact.email }}</td>
-      <td align="center">{{ contact.address }}</td>
-      <td>
-        <div class="buttons-container">
-            <button @click="goToEditContacts(contact.id)" class="search-button">Editar</button>
-            <button @click="deleteContacts(contact.id)" class="remove-button">Remover</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-</div>
-  <div class="pagination">
-    <button @click="previousPage" :disabled="currentPage === 1" :class="{ active: currentPage !== 1 }">Anterior</button>
-    <button v-for="page in totalPages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }">{{ page }}</button>
-    <button @click="nextPage" :disabled="currentPage === totalPages" :class="{ active: currentPage !== totalPages }">Próxima</button>
-  </div>
-</div>
 </template>
 
 <script setup>
-import http from '@/services/http';
 import { onMounted } from 'vue';
-import { useAuthStore } from '@/stores/auth';
 import { ref, computed } from 'vue';
-import router from '@/router'; 
+import router from '@/router';
+import http from '@/services/http';
+import { useAuthStore } from '@/stores/auth';
 
 const auth = useAuthStore();
-const contacts = ref([])
+const contacts = ref([]);
 const searchText = ref('');
 const currentPage = ref(1);
-const pageSize = 9
+const pageSize = 9;
 
-const goTocreateContacts = ()=>{
+const goTocreateContacts = () => {
   router.push({ name: 'createContacts' });
-}
+};
 
-const goToEditContacts = (id) =>{
-  router.push({ path: 'contacts/edit/'+id });
-}
+const goToEditContacts = (id) => {
+  router.push({ path: 'contacts/edit/' + id });
+};
 
 const fetchData = async () => {
-try {
-  const tokenAuth = 'Bearer ' + auth.token
-  const response = await http.get('/contacts', {
-              headers: {
-                  Authorization: tokenAuth
-              }
-          });
-  contacts.value = response.data;
-  paginatedContacts
-} catch (error) {
-  console.error('Erro ao fazer requisição:', error);
-}
+  try {
+    const tokenAuth = 'Bearer ' + auth.token;
+    const response = await http.get('/contacts', {
+      headers: {
+        Authorization: tokenAuth
+      }
+    });
+    contacts.value = response.data;
+  } catch (error) {
+    console.error('Erro ao fazer requisição:', error);
+  }
 };
 
 const deleteContacts = async (id) => {
-try {
-  const tokenAuth = 'Bearer ' + auth.token
-  await http.delete('/contacts/' + id, {
+  try {
+    const tokenAuth = 'Bearer ' + auth.token;
+    await http.delete('/contacts/' + id, {
       headers: {
-          Authorization: tokenAuth
+        Authorization: tokenAuth
       }
-  });
-          fetchData()
-} catch (error) {
-  console.error('Erro ao fazer requisição:', error);
-}
+    });
+    fetchData();
+  } catch (error) {
+    console.error('Erro ao fazer requisição:', error);
+  }
 };
 
 const filteredContacts = computed(() => {
   const searchLower = searchText.value.toLowerCase();
   return contacts.value.filter(contact => {
     return contact.name.toLowerCase().includes(searchLower) ||
-           contact.email.toLowerCase().includes(searchLower) ||
-           contact.address.toLowerCase().includes(searchLower);
+      contact.email.toLowerCase().includes(searchLower) ||
+      contact.address.toLowerCase().includes(searchLower);
   });
 });
 
 const paginatedContacts = computed(() => {
-const start = (currentPage.value - 1) * pageSize;
-return filteredContacts.value.slice(start, start + pageSize);
+  const start = (currentPage.value - 1) * pageSize;
+  return filteredContacts.value.slice(start, start + pageSize);
 });
 
 const totalPages = computed(() => {
-return Math.ceil(filteredContacts.value.length / pageSize);
+  return Math.ceil(filteredContacts.value.length / pageSize);
 });
 
 const previousPage = () => {
-currentPage.value--;
+  currentPage.value--;
 };
 
 const goToPage = (page) => {
-currentPage.value = page;
+  currentPage.value = page;
 };
 
 const nextPage = () => {
-currentPage.value++;
+  currentPage.value++;
 };
 
 const search = () => {
-if(searchText.value){
-  filteredContacts()
-}else{
-  fetchData()
-}
+  if (searchText.value) {
+    filteredContacts();
+  } else {
+    fetchData();
+  }
 };
+
 onMounted(() => {
-fetchData(); 
+  fetchData();
 });
+
 </script>
 <style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 .separator {
   width: 100%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.1);
@@ -150,15 +155,13 @@ fetchData();
 .button-container {
   display: flex;
   justify-content: center;
-  margin-right: 1%;
-  width: 18.5%;
+  width: 19.5%;
 }
 
 .search-container {
   display: flex;
   justify-content: center;
-  margin-left: 1%;
-  width: 78.5%;
+  width: 75.5%;
 }
 
 .contacts-container {
@@ -178,10 +181,10 @@ fetchData();
 
 .contacts-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  gap: 0.5%;
   flex-wrap: wrap;
   width: 100%;
-  gap: 1%;
 }
 
 .input {
@@ -198,7 +201,8 @@ fetchData();
 }
 
 .search-button,
-.create-button {
+.create-button,
+.return-button {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -216,10 +220,13 @@ fetchData();
   background-color: var(--darker-green);
 }
 
-.search-button:hover {
+.search-button:hover,
+.return-button:hover {
   background-color: var(--edit-button-hover-color);
 }
-
+.return-button{
+  width: 3%;
+}
 .table-contacts {
   width: 100%;
   border-collapse: collapse;
