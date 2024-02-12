@@ -35,5 +35,6 @@ jobs:
 
     - name: Deploy
       run: |
+        ls
         cd ./Agenda_cohros/beckend/
         docker-compose up -d
