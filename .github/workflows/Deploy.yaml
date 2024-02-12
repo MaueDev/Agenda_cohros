@@ -1,47 +1,39 @@
-name: Deploy to GCE
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - prod
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
-    env:
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-      GCP_ZONE: ${{ secrets.GCP_ZONE }}
-      GCP_SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
     steps:
-    - name: Executando Projeto no docker-compose
-      run: |
-        ls
-        cd backend/
-        docker-compose up -d --build
-
-
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Authenticate with Google Cloud
+    - name: Install PHP and Composer
       run: |
-        echo "$GCP_SA_KEY"
-        echo "$GCP_SA_KEY" > gcp-key.json
-        gcloud auth activate-service-account --key-file=gcp-key.json
-        gcloud config set project $GCP_PROJECT_ID
-        gcloud config set compute/zone $GCP_ZONE
+        sudo apt-get update
+        sudo apt-get install php-cli php-zip unzip
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php composer-setup.php
+        php -r "unlink('composer-setup.php');"
+        sudo mv composer.phar /usr/local/bin/composer
 
-    - name: Set environment variables
-      run: |
-        export GOOGLE_APPLICATION_CREDENTIALS=gcp-key.json
-        export CLOUDSDK_CORE_DISABLE_PROMPTS=1
-        export SECRET_KEY=${GCP_SECRET_KEY}
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-    - name: Deploy to GCE
+    - name: Install Node.js dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy
       run: |
-        # Seu comando de deploy aqui
-        gcloud compute scp --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --recurse * mauricio_rsc_mg@instance-1-testapatricococo:./
-        gcloud compute ssh mauricio_rsc_mg@instance-1-testapatricococo --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command "docker --version"
+        cd beckend/
+        docker-compose up -d
