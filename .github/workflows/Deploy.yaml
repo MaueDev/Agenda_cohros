@@ -15,7 +15,7 @@ jobs:
     - name: Deploy
       run: |
         ls
-        cd ./Agenda_cohros/beckend/
+        cd ./backend
         docker-compose up -d
     - name: Install PHP and Composer
       run: |
