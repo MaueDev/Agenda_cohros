@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main
+      - prod
 
 jobs:
   build:
@@ -17,7 +17,6 @@ jobs:
         ls
         cd ./Agenda_cohros/beckend/
         docker-compose up -d
-        
     - name: Install PHP and Composer
       run: |
         sudo apt-get update
