@@ -1,76 +1,83 @@
 <template>
     <div class="create-contacts-container">
-    <div class="create-contacts-header">
-        <div class="item-input-container" >
-            <label> Nome </label>
-            <input class="input" :class="{ 'error': saveClicked && contact.name === '' }" type="text" placeholder="Name" v-model="contact.name"/>
-        </div>
-        <div class="item-input-container" >
-            <label> Email </label>
-            <input class="input" :class="{ 'error': saveClicked && contact.email === '' }" type="text" placeholder="Email" v-model="contact.email"/>
-        </div>
-        <div class="item-input-container" >
-            <label> Endereço </label>
-            <input class="input" :class="{ 'error': saveClicked && contact.address === '' }" type="text" placeholder="Endereço" v-model="contact.address"/>
-        </div>
-        <div class="item-input-container">
-            <label> Números de Telefones </label>
-        
-      </div>
-    </div>
-    <div class="phone-container">
-        <div class="search-phone-container">
-            <input class="input" @change="filteredPhones()" type="text" placeholder="Pesquisar" v-model="searchPhones"/>
-            <button class="search-button" @click="filteredPhones()">Pesquisar</button>
-        </div>
-        <div class="button-phone-container"> 
-            <button class="create-button" @click="openModalPhone()">Adicionar</button>
-        </div>
-        <hr class="phone-container-separator">
-        <div class="contacts-list-container">
-            <ul class="contacts-list">
-            <li v-for="(phone, index) in filteredPhones" v-bind:key="index" class="contact-item">
-                <span class="phone-number">{{phone}}</span>
-                <div class="buttons-container">
-                    <button @click="editPhone(index)" class="search-button">Editar</button>
-                    <button @click="removePhone(index)" class="remove-button">Remover</button>
-                </div>
-            <hr class="phone-container-separator">
-            </li>
+        <div class="create-contacts-header">
+            <div class="item-input-container">
+                <label> Nome </label>
+                <input class="input" :class="{ 'error': saveClicked && contact.name === '' }" type="text" placeholder="Name"
+                    v-model="contact.name" />
+            </div>
+            <div class="item-input-container">
+                <label> Email </label>
+                <input class="input" :class="{ 'error': saveClicked && contact.email === '' }" type="text"
+                    placeholder="Email" v-model="contact.email" />
+            </div>
+            <div class="item-input-container">
+                <label> Endereço </label>
+                <input class="input" :class="{ 'error': saveClicked && contact.address === '' }" type="text"
+                    placeholder="Endereço" v-model="contact.address" />
+            </div>
+            <div class="item-input-container">
+                <label> Números de Telefones </label>
 
-            </ul>
+            </div>
         </div>
-    </div>
-    <div class="action-contacts"> 
-        <button v-if="alterContact" class="create-button" @click="updateContacts()">Alterar</button>
-        <button v-else class="create-button" @click="saveContacts()">Salvar</button>
-        <button class="remove-button" @click="goToContacts()">Voltar</button>
-    </div>
-    <div v-if="showModalNumber" class="modalPhone"> 
-        <div class="modal-content">
-            <span>Adicionar numero</span>
-            <input class="input" v-model="phoneNumberInput" @input="validatePhone()" type="text" placeholder="Numero" maxlength="15"/>
-            <div class="action">
-                <button v-if="indexPhone != null" class="create-button" @click="alterNumber()" :disabled="phoneNumberInput.length < 14">Alterar</button>
-                <button v-else class="create-button" @click="addNumber()" :disabled="phoneNumberInput.length < 14">Adicionar</button>
+        <div class="phone-container">
+            <div class="search-phone-container">
+                <input class="input" @change="filteredPhones()" type="text" placeholder="Pesquisar"
+                    v-model="searchPhones" />
+                <button class="search-button" @click="filteredPhones()">Pesquisar</button>
+            </div>
+            <div class="button-phone-container">
+                <button class="create-button" @click="openModalPhone()">Adicionar</button>
+            </div>
+            <hr class="phone-container-separator">
+            <div class="contacts-list-container">
+                <ul class="contacts-list">
+                    <li v-for="(phone, index) in filteredPhones" v-bind:key="index" class="contact-item">
+                        <span class="phone-number">{{ phone }}</span>
+                        <div class="buttons-container">
+                            <button @click="editPhone(index)" class="search-button">Editar</button>
+                            <button @click="removePhone(index)" class="remove-button">Remover</button>
+                        </div>
+                        <hr class="phone-container-separator">
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="action-contacts">
+            <button class="remove-button" @click="goToContacts()">Voltar</button>
+            <button class="create-button" @click="saveOrUpdateContacts()">{{ nameButton }}</button>
+        </div>
+        <div v-if="showModalNumber" class="modalPhone">
+            <div class="modal-content">
+                <span>Adicionar numero</span>
+                <input class="input" v-model="phoneNumberInput" @input="validatePhone()" type="text" placeholder="Numero"
+                    maxlength="15" />
+                <div class="action">
+                    <button v-if="indexPhone != null" class="create-button" @click="alterNumber()"
+                        :disabled="phoneNumberInput.length < 14">Alterar</button>
+                    <button v-else class="create-button" @click="addNumber()"
+                        :disabled="phoneNumberInput.length < 14">Adicionar</button>
                 <button class="remove-button" @click="closeModalPhone()">Cancelar</button>
             </div>
         </div>
     </div>
-  </div>
-</template>
+</div></template>
 
 
 <script setup>
-import { ref , computed, reactive, onMounted } from 'vue';
+import { ref , computed, onMounted, reactive } from 'vue';
 import router from '../../router';
 import http from '@/services/http';
-import {useAuthStore} from '@/stores/auth';
-const phoneNumberInput = ref('')
-const searchPhones = ref('')
-const showModalNumber = ref(false)
-const alterContact = ref(false)
-const indexPhone = ref(null)
+import { useAuthStore } from '@/stores/auth';
+
+const nameButton = ref('Salvar');
+const phoneNumberInput = ref('');
+const searchPhones = ref('');
+const showModalNumber = ref(false);
+const alterContact = ref(false);
+const indexPhone = ref(null);
 const saveClicked = ref(false);
 const phonesList = ref([]);
 const auth = useAuthStore();
@@ -80,118 +87,113 @@ const contact = reactive({
   email: '',
   address: '',
   phones: phonesList.value
-})
+});
 
-const saveContacts = async () => {
-    saveClicked.value = true;
-    if (!contact.name.trim() || !contact.email.trim() || !contact.address.trim()) {
+const saveOrUpdateContacts = async () => {
+  saveClicked.value = true;
+  if (!contact.name.trim() || !contact.email.trim() || !contact.address.trim()) {
     return false;
   }
- 
-    try {
-        const tokenAuth = 'Bearer ' + auth.token
-        await http.post('/contacts',contact, {
-            headers: {
-                Authorization: tokenAuth
-            }
-        });
-        router.push({ name: 'contacts' })
-    } catch (error) {
-        console.error('Erro ao fazer requisição:', error);
-    }
 
-}
-
-const updateContacts = async () => {
-    saveClicked.value = true;
-    if (!contact.name.trim() || !contact.email.trim() || !contact.address.trim()) {
-    return false;
-  }
-  contact.phones = phonesList.value;
-    try {
-        const tokenAuth = 'Bearer ' + auth.token
-        await http.put('/contacts/' + contactId,contact, {
-            headers: {
-                Authorization: tokenAuth
-            }
-        });
-        router.push({ name: 'contacts' })
-    } catch (error) {
-        console.error('Erro ao fazer requisição:', error);
-    }
-
-}
-const goToContacts = ()=>{
+  try {
+    const tokenAuth = 'Bearer ' + auth.token;
+    const url = contactId ? `/contacts/${contactId}` : '/contacts';
+    const method = contactId ? 'PUT' : 'POST';
+    await http({
+      method: method,
+      url: url,
+      data: contact,
+      headers: {
+        Authorization: tokenAuth
+      }
+    });
+    
     router.push({ name: 'contacts' });
-}
-const removePhone = (index)=>{
-    phonesList.value.splice(index, 1)
-}
-const alterNumber = () => {
-    phonesList.value[indexPhone.value] = phoneNumberInput.value
-    closeModalPhone();
-    console.log(phonesList)
-    indexPhone.value = null
-}
-const openModalPhone = () => {
-    showModalNumber.value = true
-}
+  } catch (error) {
+    console.error('Erro ao fazer requisição:', error);
+  }
+};
 
-const editPhone = (index) =>{
-    console.log(index)
-    phoneNumberInput.value = phonesList.value[index];
-    indexPhone.value = index
-    openModalPhone()
-}
+const goToContacts = () => {
+  router.push({ name: 'contacts' });
+};
+
+const removePhone = (index) => {
+  phonesList.value.splice(index, 1);
+};
+
+const alterNumber = () => {
+  phonesList.value[indexPhone.value] = phoneNumberInput.value;
+  closeModalPhone();
+  console.log(phonesList);
+  indexPhone.value = null;
+};
+
+const openModalPhone = () => {
+  showModalNumber.value = true;
+};
+
+const editPhone = (index) => {
+  console.log(index);
+  phoneNumberInput.value = phonesList.value[index];
+  indexPhone.value = index;
+  openModalPhone();
+};
+
 const addNumber = () => {
-    phonesList.value.push(phoneNumberInput.value)
-    phoneNumberInput.value = ''
-    closeModalPhone()
-}
+  phonesList.value.push(phoneNumberInput.value);
+  phoneNumberInput.value = '';
+  closeModalPhone();
+};
+
 const closeModalPhone = () => {
-    showModalNumber.value = false
-    indexPhone.value = null
-    phoneNumberInput.value = ''
-}
-const validatePhone= ()=> {
-    phoneNumberInput.value = phoneNumberInput.value.replace(/\D/g, '') 
-                               .replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); 
-}
+  showModalNumber.value = false;
+  indexPhone.value = null;
+  phoneNumberInput.value = '';
+};
+
+const validatePhone = () => {
+  phoneNumberInput.value = phoneNumberInput.value.replace(/\D/g, '').replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+};
+
 const filteredPhones = computed(() => {
   const searchLower = searchPhones.value.toLowerCase().replace(/\D/g, '');
   return phonesList.value.filter(phone => {
-    const phoneDigitsOnly = phone.replace(/\D/g, ''); 
+    const phoneDigitsOnly = phone.replace(/\D/g, '');
     return phoneDigitsOnly.includes(searchLower);
   });
 });
-const fetchContacts = async () => {
-    
-    if (contactId) {
-        alterContact.value = true;
-        try {
-            const tokenAuth = 'Bearer ' + auth.token
-            const response = await http.get('/contacts/' + contactId, {
-                headers: {
-                    Authorization: tokenAuth
-                }
-            });
-            populate(response.data)
-        } catch (error) {
-            console.error('Erro ao fazer requisição:', error);
-        }
-    }
 
-    function populate(contactData){
-        contact.name = contactData.name;
-        contact.email = contactData.email;
-        contact.address = contactData.address;
-        phonesList.value = contactData.phones
+const fetchContacts = async () => {
+    nameButton.value  = contactId ? 'Alterar' : 'Salvar'
+  if (contactId) {
+    alterContact.value = true;
+    try {
+      const tokenAuth = 'Bearer ' + auth.token;
+      const response = await http.get(`/contacts/${contactId}`, {
+        headers: {
+          Authorization: tokenAuth
+        }
+      });
+      populate(response.data);
+    } catch (error) {
+      console.error('Erro ao fazer requisição:', error);
     }
-}
+  }
+
+  function populate(contactData) {
+    contact.name = contactData.name;
+    contact.email = contactData.email;
+    contact.address = contactData.address;
+    phonesList.value = contactData.phones;
+  }
+};
+
 onMounted(() => {
-fetchContacts();
+  fetchContacts();
 });
 </script>
+
 
 <style>
 .create-contacts-container .modal-content {
