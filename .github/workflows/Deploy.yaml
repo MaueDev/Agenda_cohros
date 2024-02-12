@@ -12,27 +12,26 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Deploy
+    - name: Iniciando Docker-compose
       run: |
-        ls
-        cd ./backend
         docker-compose up -d
-    - name: Install PHP and Composer
+
+    - name: Rodando Validacao de Codigo
       run: |
-        sudo apt-get update
-        sudo apt-get install php-cli php-zip unzip
-        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-        php composer-setup.php
-        php -r "unlink('composer-setup.php');"
-        sudo mv composer.phar /usr/local/bin/composer
+        docker-compose run --rm php-fpm composer install
+        docker-compose run --rm php-fpm composer cs-check
+        docker-compose run --rm php-fpm composer analyze
+    - name: Rodando Teste Unitario
+      run: |
+        docker-compose run --rm php-fpm vendor/bin/phpunit --colors=always --do-not-cache-result
 
     - name: Install Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v18.12.0
       with:
-        node-version: '14'
+        node-version: '18'
 
-    - name: Install Node.js dependencies
+    - name: Instalando Componente Vue.js
       run: npm install
 
-    - name: Build
+    - name: Gerando Build do front end
       run: npm run build
