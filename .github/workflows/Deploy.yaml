@@ -32,10 +32,10 @@ jobs:
 
     - name: Instalando Componente Vue.js
       run: |
-      cd frontend
-      npm install
+        cd frontend
+        npm install
 
     - name: Gerando Build do front end
       run: |
-      cd frontend
-      npm run build
+        cd frontend
+        npm run build
