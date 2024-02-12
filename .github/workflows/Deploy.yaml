@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - prod
+      - main
 
 jobs:
   build:
@@ -29,38 +29,3 @@ jobs:
     - name: Rodando Teste Unitario
       run: |
         docker-compose run --rm php-fpm vendor/bin/phpunit --colors=always --do-not-cache-result
-
-    - name: Install Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
-
-    - name: Instalando Componente Vue.js
-      run: |
-        cd frontend
-        npm install
-
-    - name: Gerando Build do front end
-      run: |
-        cd frontend
-        npm run build
-
-    - name: Authenticate with Google Cloud
-      run: |
-        echo "$GCP_SA_KEY"
-        echo "$GCP_SA_KEY" > gcp-key.json
-        gcloud auth activate-service-account --key-file=gcp-key.json
-        gcloud config set project $GCP_PROJECT_ID
-        gcloud config set compute/zone $GCP_ZONE
-
-    - name: Set environment variables
-      run: |
-        export GOOGLE_APPLICATION_CREDENTIALS=gcp-key.json
-        export CLOUDSDK_CORE_DISABLE_PROMPTS=1
-
-    - name: Deploy to GCE
-      run: |
-        gcloud compute scp --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --recurse * mauricio_rsc_mg@agenda:./
-        gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command " cat /etc/os-release"
-        gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command "docker --version"
-        gcloud compute ssh mauricio_rsc_mg@agenda --project="${GCP_PROJECT_ID}" --zone="${GCP_ZONE}" --command "docker-composer up -d --build"
