@@ -31,7 +31,11 @@ jobs:
         node-version: '18'
 
     - name: Instalando Componente Vue.js
-      run: npm install
+      run: |
+      cd ./fronted
+      npm install
 
     - name: Gerando Build do front end
-      run: npm run build
+      run: |
+      cd ./fronted
+      npm run build
