@@ -15,11 +15,11 @@ class SaveContactsDtoTest extends TestCase
     public function fromArrayShouldWork(): void
     {
         $params = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-            'address' => '123 Main Street',
-            'phones' => ['(34) 3434-3434', '(34) 5656-5656'],
-            'authorizationHeader' => 'Bearer token'
+            'name'                => 'John Doe',
+            'email'               => 'john.doe@example.com',
+            'address'             => '123 Main Street',
+            'phones'              => ['(34) 3434-3434', '(34) 5656-5656'],
+            'authorizationHeader' => 'Bearer token',
         ];
 
         $saveContactsDto = SaveContactsDto::fromArray($params);
@@ -44,11 +44,11 @@ class SaveContactsDtoTest extends TestCase
     public static function fromArrayDataProvidersErrors(): array
     {
         $defaultParams = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-            'address' => '123 Main Street',
-            'phones' => ['(34) 3434-3434', '(34) 5656-5656'],
-            'authorizationHeader' => 'Bearer token'
+            'name'                => 'John Doe',
+            'email'               => 'john.doe@example.com',
+            'address'             => '123 Main Street',
+            'phones'              => ['(34) 3434-3434', '(34) 5656-5656'],
+            'authorizationHeader' => 'Bearer token',
         ];
 
         $substituteValue = static function ($key, $value) use ($defaultParams) {
@@ -56,7 +56,7 @@ class SaveContactsDtoTest extends TestCase
         };
 
         return [
-            'fromArrayShouldFailWhenAuthorizationHeaderIsEmpty' => [
+            'fromArrayShouldFailWhenAuthorizationHeaderIsEmpty'     => [
                 $substituteValue('authorizationHeader', ''),
                 ContactsEnum::EMPTY_AUTH_HEADER->value,
             ],
@@ -64,15 +64,15 @@ class SaveContactsDtoTest extends TestCase
                 $substituteValue('authorizationHeader', null),
                 ContactsEnum::EMPTY_AUTH_HEADER->value,
             ],
-            'fromArrayShouldFailWhenEmailIsEmpty' => [
+            'fromArrayShouldFailWhenEmailIsEmpty'                   => [
                 $substituteValue('email', ''),
                 ContactsEnum::EMPTY_EMAIL->value,
             ],
-            'fromArrayShouldFailWhenEmailIsNotValid' => [
+            'fromArrayShouldFailWhenEmailIsNotValid'                => [
                 $substituteValue('email', 'invalidemail'),
                 ContactsEnum::INVALID_EMAIL->value,
             ],
-            'fromArrayShouldFailWhenAddressIsEmpty' => [
+            'fromArrayShouldFailWhenAddressIsEmpty'                 => [
                 $substituteValue('address', ''),
                 ContactsEnum::EMPTY_ADDRESS->value,
             ],

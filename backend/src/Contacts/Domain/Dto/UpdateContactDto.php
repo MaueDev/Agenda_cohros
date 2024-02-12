@@ -27,7 +27,7 @@ class UpdateContactDto
 
         Assert::thatNullOr($params['email'])
             ->notEmpty(ContactsEnum::EMPTY_EMAIL->value)
-            ->email()
+            ->email(ContactsEnum::INVALID_EMAIL->value)
             ->string(ContactsEnum::STRING_EMAIL->value);
 
         Assert::thatNullOr($params['address'])
