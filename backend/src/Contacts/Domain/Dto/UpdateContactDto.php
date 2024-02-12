@@ -23,7 +23,7 @@ class UpdateContactDto
         $instance = new self();
         Assert::thatNullOr($params['id'])
             ->notEmpty(ContactsEnum::EMPTY_ID->value)
-            ->integerish(ContactsEnum::INTERGER_ID->value);
+            ->integerish(ContactsEnum::INTEGER_ID->value);
 
         Assert::thatNullOr($params['email'])
             ->notEmpty(ContactsEnum::EMPTY_EMAIL->value)

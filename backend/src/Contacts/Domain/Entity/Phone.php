@@ -51,7 +51,7 @@ class Phone
     {
         $entity           = new self();
         $entity->contacts = $contacts;
-        $entity->number   = $phoneDto->getNumber();
+        $entity->number   = PhoneHelper::unformatPhone($phoneDto->getNumber());
         return $entity;
     }
 

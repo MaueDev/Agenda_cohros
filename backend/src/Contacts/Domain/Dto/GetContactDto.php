@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Agenda\Contacts\Domain\Dto;
 
+use Agenda\Contacts\Domain\Enum\Dto\ContactsEnum;
 use Assert\Assert;
 
 class GetContactDto
@@ -18,8 +19,8 @@ class GetContactDto
     {
         $instance = new self();
         Assert::thatNullOr($params['id'])
-            ->notEmpty('o id não pode estar vazio.')
-            ->integerish('o id tem que ser inteiro.');
+            ->notEmpty(ContactsEnum::EMPTY_ID->value)
+            ->integerish(ContactsEnum::INTEGER_ID->value);
 
         $instance->id = (int) $params['id'];
 

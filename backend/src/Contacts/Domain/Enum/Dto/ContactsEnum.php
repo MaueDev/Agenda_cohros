@@ -21,6 +21,8 @@ enum ContactsEnum: string
     case EMPTY_AUTH_HEADER  = 'O cabeçalho de autorização não pode estar vazio.';
     case STRING_AUTH_HEADER = 'O cabeçalho de autorização deve ser uma string.';
 
-    case EMPTY_ID    = 'O id não pode estar vazio.';
-    case INTERGER_ID = 'O id deve ser uma inteiro.';
+    case EMPTY_ID   = 'O id não pode estar vazio.';
+    case INTEGER_ID = 'O id deve ser uma inteiro.';
+
+    case INVALID_EMAIL = 'O E-mail esta invalido ';
 }

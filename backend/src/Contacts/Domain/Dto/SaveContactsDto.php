@@ -21,12 +21,9 @@ class SaveContactsDto
     public static function fromArray(array $params): self
     {
         $instance = new self();
-        $token    = str_replace('Bearer ', '', $params['authorizationHeader']);
         Assert::that($params['authorizationHeader'])
             ->notEmpty(ContactsEnum::EMPTY_AUTH_HEADER->value)
             ->string(ContactsEnum::STRING_AUTH_HEADER->value);
-        Assert::that($token)
-            ->notEmpty(ContactsEnum::EMPTY_AUTH_HEADER->value);
 
         Assert::thatNullOr($params['email'])
             ->notEmpty(ContactsEnum::EMPTY_EMAIL->value)

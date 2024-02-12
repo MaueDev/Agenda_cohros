@@ -8,6 +8,7 @@ use Agenda\Auth\Domain\Entity\Users;
 use Agenda\Contacts\Domain\Dto\PhoneDto;
 use Agenda\Contacts\Domain\Dto\SaveContactsDto;
 use Agenda\Contacts\Domain\Dto\UpdateContactDto;
+use Agenda\Contacts\Domain\Traits\PhoneHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -23,6 +24,8 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'contacts')]
 class Contacts
 {
+    use PhoneHelper;
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue]
