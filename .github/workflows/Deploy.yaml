@@ -18,6 +18,7 @@ jobs:
     steps:
     - name: Executando Projeto no docker-compose
       run: |
+        ls
         cd backend/
         docker-compose up -d --build
 
