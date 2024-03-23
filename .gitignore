@@ -1,2 +1,38 @@
 backend/vendor/
 backend/composer.lock
+
+## Agenda Api
+
+agenda-api/HELP.md
+agenda-api/target/
+!agenda-api/.mvn/wrapper/maven-wrapper.jar
+!agenda-api/**/src/main/**/target/
+!agenda-api/**/src/test/**/target/
+
+### STS ###
+agenda-api/apt_generated
+agenda-api/classpath
+agenda-api/factorypath
+agenda-api/project
+agenda-api/settings
+agenda-api/springBeans
+agenda-api/sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+agenda-api/nbproject/private/
+agenda-api/nbbuild/
+agenda-api/dist/
+agenda-api/nbdist/
+agenda-api/.nb-gradle/
+agenda-apibuild/
+agenda-api!**/src/main/**/build/
+agenda-api!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
